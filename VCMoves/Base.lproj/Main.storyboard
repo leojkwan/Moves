@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="VCMoves" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uSY-b4-rQd">
+                                <rect key="frame" x="164.5" y="18.5" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="transitionButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vbl-K7-tri"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DY0-ep-d8x">
+                                <rect key="frame" x="138" y="310.5" width="120" height="120"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="DY0-ep-d8x" secondAttribute="height" id="3OP-sk-wl7"/>
+                                    <constraint firstAttribute="width" constant="120" id="yav-hG-oPW"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.99706631899999998" green="0.51223087310000004" blue="0.39859005809999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="DY0-ep-d8x" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="310.5" id="6ec-LB-qNw"/>
+                            <constraint firstItem="uSY-b4-rQd" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="bC9-Tf-DlF"/>
+                            <constraint firstItem="uSY-b4-rQd" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-300" id="c1v-t2-oto"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="DY0-ep-d8x" secondAttribute="trailing" constant="101" id="k3l-ic-Czk"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="item" destination="DY0-ep-d8x" id="EhV-ZJ-zNc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="32.799999999999997" y="38.23088455772114"/>
+        </scene>
+        <!--Detail View Controller-->
+        <scene sceneID="3vd-6z-IHV">
+            <objects>
+                <viewController storyboardIdentifier="vc2" id="7AL-8c-zzz" customClass="DetailViewController" customModule="Moves" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="W6g-l6-MyO"/>
+                        <viewControllerLayoutGuide type="bottom" id="ufG-3c-wFJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="9LJ-Ov-GaJ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zfh-qZ-NFT">
+                                <rect key="frame" x="190" y="40" width="50" height="50"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="zfh-qZ-NFT" secondAttribute="height" id="2RP-kK-J0E"/>
+                                    <constraint firstAttribute="width" constant="50" id="Q5y-79-FlV"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.50601644468474782" green="1" blue="0.86470690680543205" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="zfh-qZ-NFT" secondAttribute="trailing" constant="119" id="8aQ-pY-fvI"/>
+                            <constraint firstItem="zfh-qZ-NFT" firstAttribute="top" secondItem="9LJ-Ov-GaJ" secondAttribute="topMargin" constant="40" id="CxA-iI-3Ee"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="detailItem" destination="zfh-qZ-NFT" id="9sw-Rs-Win"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8pK-p4-qMF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="806" y="165"/>
+        </scene>
+    </scenes>
+</document>
