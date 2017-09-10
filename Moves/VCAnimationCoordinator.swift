@@ -15,20 +15,25 @@ public protocol CustomPresenterDelegate: class {
 }
 
 public protocol CustomDismisserDelegate: class {
-  var contextualViews: [ContextualViewPair]  { get set }
-  weak var delegate: ModalDismisserDelegate? { get set }
+  
 }
 
 public typealias ContextualViewPair = (fromView: UIView, toView: UIView)
-public typealias VCAnimator = Animator<UIViewController, UIViewController>
 
+open class PresentAnimater<PresentingViewController: UIViewController, PresentedViewController: UIViewController>: Animator<PresentingViewController, PresentedViewController>, CustomPresenterDelegate {
+  
+}
 
-open class VCAnimationCoordinator<Presenter: VCAnimator, Dismisser: VCAnimator>: NSObject, UIViewControllerTransitioningDelegate  {
+open class DismissAnimater<PresentingViewController: UIViewController, PresentedViewController: UIViewController>: Animator<PresentingViewController, PresentedViewController>, CustomDismisserDelegate {
+  
+}
+
+open class VCAnimationCoordinator<PresentingViewController: UIViewController, PresentedViewController: UIViewController>: NSObject, UIViewControllerTransitioningDelegate  {
 
   fileprivate var dimBackground: UIView!
   
-  public let presenter: Presenter
-  public let dismisser: Dismisser
+  public let presenter: PresentAnimater<PresentingViewController, PresentedViewController>
+  public let dismisser: DismissAnimater<PresentingViewController, PresentedViewController>
   public let options: MovesConfiguration
   public let unwindContextualViewsOnDismiss: Bool = true
   public var registeredContextualViews: (() -> ([ContextualViewPair]))?
@@ -43,8 +48,8 @@ open class VCAnimationCoordinator<Presenter: VCAnimator, Dismisser: VCAnimator>:
   }
   
   public init(
-    presenter: Presenter,
-    dismisser: Dismisser,
+    presenter: PresentAnimater<PresentingViewController, PresentedViewController>,
+    dismisser: DismissAnimater<PresentingViewController, PresentedViewController>,
     options: MovesConfiguration = MovesConfiguration.defaultConfig()) {
     self.presenter = presenter
     self.dismisser = dismisser
@@ -68,10 +73,9 @@ open class VCAnimationCoordinator<Presenter: VCAnimator, Dismisser: VCAnimator>:
   public func dismiss(_ destinationVC: UIViewController, presentingVC: UIViewController, with registeredContextualViews: (()->([ContextualViewPair]))? = nil){
     
     self.registeredContextualViews = registeredContextualViews
-    self.presenter.registeredContextualViews = registeredContextualViews
     
-    if unwindContextualViewsOnDismiss {
-      self.dismisser.registeredContextualViews = registeredContextualViews
+    if let specificContextualViews = registeredContextualViews {
+      self.dismisser.registeredContextualViews = specificContextualViews
     }
     
     destinationVC.transitioningDelegate = self
@@ -80,7 +84,6 @@ open class VCAnimationCoordinator<Presenter: VCAnimator, Dismisser: VCAnimator>:
   }
   
   public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-    
     return presenter
   }
   

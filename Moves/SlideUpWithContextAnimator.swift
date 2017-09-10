@@ -2,7 +2,8 @@ import Foundation
 import Foundation
 import UIKit
 
-open class SlideUpWithContextAnimator: Animator<UIViewController, UIViewController> {
+
+open class SlideUpWithContextAnimator<PresentingViewController: UIViewController, PresentedViewController: UIViewController>: PresentAnimater<PresentingViewController, PresentedViewController> {
   
   fileprivate lazy var pan: UIPanGestureRecognizer = {
     let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
@@ -18,7 +19,6 @@ open class SlideUpWithContextAnimator: Animator<UIViewController, UIViewControll
   fileprivate var relativeSizeToParent: CGFloat
   fileprivate var animationOptions: UIViewAnimationOptions = .curveLinear
   fileprivate var originPoint: CGPoint!
-  private var transitionContext: UIViewControllerContextTransitioning?
   
   public required init(
     verticalOffset: CGFloat,
@@ -42,11 +42,10 @@ open class SlideUpWithContextAnimator: Animator<UIViewController, UIViewControll
     pan.isEnabled = !disable
   }
   
-  override open func prepareAnimationBlock(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: UIViewController, to presentedVC: UIViewController) {
+  override open func prepareAnimationBlock(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingViewController, to presentedVC: PresentedViewController) {
     
     super.prepareAnimationBlock(using: transitionContext, from: presentingVC, to: presentedVC)
     
-    self.transitionContext = transitionContext
     
     // Setup the transition
     let containerView = transitionContext.containerView
@@ -69,7 +68,8 @@ open class SlideUpWithContextAnimator: Animator<UIViewController, UIViewControll
       y: containerView.frame.midY + containerView.frame.height
     )
   }
-  override open func completeAnimation(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: UIViewController, to presentedVC: UIViewController) {
+  
+  override open func completeAnimation(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingViewController, to presentedVC: PresentedViewController) {
     super.completeAnimation(using: transitionContext, from: presentingVC, to: presentedVC)
     
     let toView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
@@ -81,7 +81,8 @@ open class SlideUpWithContextAnimator: Animator<UIViewController, UIViewControll
   }
 
   
-  open override func performAnimations(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: UIViewController, to presentedVC: UIViewController, completion: @escaping () -> ()) {
+  open override func performAnimations(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingViewController, to presentedVC: PresentedViewController, completion: @escaping () -> ()) {
+    super.performAnimations(using: transitionContext, from: presentingVC, to: presentedVC, completion: completion)
     
     UIView.animateKeyframes(
       withDuration: duration,
@@ -174,7 +175,7 @@ open class SlideUpWithContextAnimator: Animator<UIViewController, UIViewControll
       let yDistanceFromCenter = originPoint.y - toView.frame.origin.y
       
       DispatchQueue.main.async {
-        if (yDistanceFromCenter < -150) {
+        if (yDistanceFromCenter < -50) {
           
           presentedVC.dismiss(animated: true, completion: nil)
           

@@ -4,21 +4,18 @@ import Moves
 class ViewController: UIViewController {
   
   @IBOutlet var item: UIView!
-  lazy fileprivate var vcAnimationCoordinator: VCAnimationCoordinator<SlideUpWithContextAnimator, SlideDownAnimator> = {
+  lazy fileprivate var vcAnimationCoordinator: VCAnimationCoordinator<ViewController, DetailViewController> = {
     
-    let slideUp = SlideUpWithContextAnimator(
-      verticalOffset: self.view.bounds.height * 1/10,
-      relativeSizeToParent: 9/10,
-      sideOffset: 0,
-      duration: 0.6,
-      dismissOnBackgroundTap: true
-    )
-    
-    let slideDown = SlideDownAnimator(duration: 0.6)
-    
-    let transitioner = VCAnimationCoordinator(
-      presenter: slideUp,
-      dismisser: slideDown
+    let transitioner = VCAnimationCoordinator<ViewController, DetailViewController>(
+      presenter: SlideUpWithContextAnimator(
+        verticalOffset: self.view.bounds.height * 1/10,
+        relativeSizeToParent: 5/10,
+        sideOffset: 0,
+        duration: 0.6,
+        dismissOnBackgroundTap: true
+      ),
+      
+      dismisser: SlideDownAnimator(duration: 0.6)
     )
     
     return transitioner

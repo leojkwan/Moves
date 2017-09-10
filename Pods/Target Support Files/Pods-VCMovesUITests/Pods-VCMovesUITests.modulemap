@@ -1,0 +1,6 @@
+framework module Pods_VCMovesUITests {
+  umbrella header "Pods-VCMovesUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

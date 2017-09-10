@@ -20,7 +20,5 @@ public class DetailViewController: UIViewController {
   override public func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
-    
-    
   }
 }
