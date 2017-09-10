@@ -2,13 +2,9 @@ import Foundation
 import Foundation
 import UIKit
 
-
-open class SlideUpWithContextAnimator<PresentingViewController: UIViewController, PresentedViewController: UIViewController>: PresentAnimater<PresentingViewController, PresentedViewController> {
+open class SlideUpWithContextAnimator<PresentingVC: UIViewController, PresentedVC: UIViewController>: PresentAnimater<PresentingVC, PresentedVC> {
   
-  fileprivate lazy var pan: UIPanGestureRecognizer = {
-    let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
-    return pan
-  }()
+  fileprivate var pan: UIPanGestureRecognizer?
   
   fileprivate var presentingVCScale: CGFloat = 1
   fileprivate var verticalOffset: CGFloat
@@ -18,7 +14,6 @@ open class SlideUpWithContextAnimator<PresentingViewController: UIViewController
   fileprivate var dimAlpha: CGFloat = 0.5
   fileprivate var relativeSizeToParent: CGFloat
   fileprivate var animationOptions: UIViewAnimationOptions = .curveLinear
-  fileprivate var originPoint: CGPoint!
   
   public required init(
     verticalOffset: CGFloat,
@@ -39,13 +34,12 @@ open class SlideUpWithContextAnimator<PresentingViewController: UIViewController
   }
   
   func disablePan(disable: Bool) {
-    pan.isEnabled = !disable
+    pan?.isEnabled = !disable
   }
   
-  override open func prepareAnimationBlock(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingViewController, to presentedVC: PresentedViewController) {
+  override open func prepareAnimationBlock(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC) {
     
     super.prepareAnimationBlock(using: transitionContext, from: presentingVC, to: presentedVC)
-    
     
     // Setup the transition
     let containerView = transitionContext.containerView
@@ -69,44 +63,39 @@ open class SlideUpWithContextAnimator<PresentingViewController: UIViewController
     )
   }
   
-  override open func completeAnimation(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingViewController, to presentedVC: PresentedViewController) {
+  override open func completeAnimation(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC) {
     super.completeAnimation(using: transitionContext, from: presentingVC, to: presentedVC)
-    
-    let toView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
-    toView.addGestureRecognizer(self.pan)
-    
-    // keep a reference of origin when we need to
-    // animated back to starting position(minimal pan gestures)
-    self.originPoint = toView.frame.origin
   }
 
   
-  open override func performAnimations(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingViewController, to presentedVC: PresentedViewController, completion: @escaping () -> ()) {
+  open override func performAnimations(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC, completion: @escaping () -> ()) {
     super.performAnimations(using: transitionContext, from: presentingVC, to: presentedVC, completion: completion)
     
     UIView.animateKeyframes(
       withDuration: duration,
       delay: 0,
       options: UIViewKeyframeAnimationOptions.calculationModeLinear,
-      animations: {
+      animations: { [weak self] in
+        
+        guard let strongSelf = self else { return }
         
         UIView.addKeyframe(
           withRelativeStartTime: 0,
-          relativeDuration: self.duration) {
+          relativeDuration: strongSelf.duration) {
             
-            presentingVC.view.transform = CGAffineTransform(scaleX: self.presentingVCScale, y: self.presentingVCScale)
+            presentingVC.view.transform = CGAffineTransform(scaleX: strongSelf.presentingVCScale, y: strongSelf.presentingVCScale)
             presentingVC.view.layer.cornerRadius = 4
             presentingVC.view.layer.masksToBounds = true
         }
         
         UIView.addKeyframe(
           withRelativeStartTime: 0,
-          relativeDuration: self.duration) {
+          relativeDuration: strongSelf.duration) {
             
             // Offset from top or bottom
-            presentedVC.view.frame.origin.y = self.fromTop ?
-              self.verticalOffset:
-              (transitionContext.containerView.bounds.maxY - presentedVC.view.bounds.height) - self.verticalOffset
+            presentedVC.view.frame.origin.y = strongSelf.fromTop ?
+              strongSelf.verticalOffset:
+              (transitionContext.containerView.bounds.maxY - presentedVC.view.bounds.height) - strongSelf.verticalOffset
         }
         
     }) { _ in
@@ -117,81 +106,4 @@ open class SlideUpWithContextAnimator<PresentingViewController: UIViewController
     }
   }
   
-  func resize(
-    verticalOffset: CGFloat,
-    fromTop: Bool = true,
-    relativeSizeToParent: CGFloat = 1,
-    sideOffset: CGFloat = 20
-    ){
-    
-    guard let transitionContext = self.transitionContext else { return }
-    
-    let fromVC = transitionContext.viewController(forKey: .from)!
-    let toVC = transitionContext.viewController(forKey: .to)!
-    
-    toVC.beginAppearanceTransition(true, animated: true)
-    
-    let repositionedX = sideOffset/2
-    let repositionedY = fromTop ?
-      verticalOffset:
-      fromVC.view.bounds.height - verticalOffset
-    
-    UIView.animate(withDuration: 0.3) {
-      toVC.view.frame = CGRect(
-        x: repositionedX,
-        y: repositionedY,
-        width: fromVC.view.bounds.width - sideOffset,
-        height: fromVC.view.bounds.height * relativeSizeToParent
-      )
-    }
-    
-    // Update origin point
-    self.originPoint = toVC.view.frame.origin
-    
-    toVC.view.translatesAutoresizingMaskIntoConstraints = true
-    toVC.view.layoutIfNeeded()
-    toVC.endAppearanceTransition()
-  }
-  
-  func handlePan(_ gesture: UIPanGestureRecognizer) {
-    
-    guard let presentedVC = self.transitionContext?.viewController(forKey: .from)! else { return }
-    
-    
-    guard let toView = gesture.view else { return }
-    // On Pan
-    let translation = gesture.translation(in: toView)
-    
-    toView.center = CGPoint(
-      x: toView.center.x,
-      y: toView.center.y + translation.y
-    )
-    
-    gesture.setTranslation(CGPoint.zero, in: toView)
-    
-    // On Release
-    if(gesture.state == .ended) {
-      
-      let yDistanceFromCenter = originPoint.y - toView.frame.origin.y
-      
-      DispatchQueue.main.async {
-        if (yDistanceFromCenter < -50) {
-          
-          presentedVC.dismiss(animated: true, completion: nil)
-          
-        } else {
-          
-          UIView.animate(
-            withDuration: 0.5,
-            delay: 0,
-            usingSpringWithDamping: 0.8,
-            initialSpringVelocity: 1,
-            options: [],
-            animations: {
-              toView.frame.origin = self.originPoint
-          }, completion: nil)
-        }
-      }
-    }
-  }
 }

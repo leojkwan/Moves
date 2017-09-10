@@ -11,7 +11,6 @@
 		70EBE30F50F545AB1D81BC4C /* Pods_VCMovesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5B89450BC9C9A16BF2FD622 /* Pods_VCMovesTests.framework */; };
 		75A01DBDCB8501F4F33B0B6F /* Pods_Moves.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA1FC8634C760F8C4B37DD99 /* Pods_Moves.framework */; };
 		9435F42B1F61177A0084D657 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435F42A1F61177A0084D657 /* AppDelegate.swift */; };
-		9435F42D1F61177A0084D657 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435F42C1F61177A0084D657 /* ViewController.swift */; };
 		9435F4301F61177A0084D657 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9435F42E1F61177A0084D657 /* Main.storyboard */; };
 		9435F4321F61177A0084D657 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9435F4311F61177A0084D657 /* Assets.xcassets */; };
 		9435F4351F61177A0084D657 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9435F4331F61177A0084D657 /* LaunchScreen.storyboard */; };
@@ -26,8 +25,9 @@
 		9435F47E1F6118130084D657 /* ModalPresenterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435F47D1F6118130084D657 /* ModalPresenterDelegate.swift */; };
 		9435F4801F6118570084D657 /* SlideDownAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435F47F1F6118570084D657 /* SlideDownAnimator.swift */; };
 		9435F4821F6118810084D657 /* SlideUpWithContextAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435F4811F6118810084D657 /* SlideUpWithContextAnimator.swift */; };
-		9435F4851F63285C0084D657 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435F4831F61DE230084D657 /* DetailViewController.swift */; };
 		9435F4871F63A4B60084D657 /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435F4861F63A4B60084D657 /* Animator.swift */; };
+		94E62CC11F6584A300F4C3BB /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94E62CC01F6584A300F4C3BB /* BaseViewController.swift */; };
+		94E62CC21F65870B00F4C3BB /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435F4831F61DE230084D657 /* DetailViewController.swift */; };
 		99A12FD9F7AA33CD8072320C /* Pods_MovesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5727674933003840BA19E35 /* Pods_MovesTests.framework */; };
 		F19715FA3519AE78F79E25AD /* Pods_VCMoves.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80043B10847F7F529C74EA5D /* Pods_VCMoves.framework */; };
 /* End PBXBuildFile section */
@@ -96,7 +96,6 @@
 		83B015662C7EF45ED32CE72F /* Pods-VCMoves.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VCMoves.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VCMoves/Pods-VCMoves.debug.xcconfig"; sourceTree = "<group>"; };
 		9435F4271F61177A0084D657 /* VCMoves.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VCMoves.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9435F42A1F61177A0084D657 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9435F42C1F61177A0084D657 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		9435F42F1F61177A0084D657 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9435F4311F61177A0084D657 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9435F4341F61177A0084D657 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -119,6 +118,7 @@
 		9435F4811F6118810084D657 /* SlideUpWithContextAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideUpWithContextAnimator.swift; sourceTree = "<group>"; };
 		9435F4831F61DE230084D657 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		9435F4861F63A4B60084D657 /* Animator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
+		94E62CC01F6584A300F4C3BB /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		A42B9851C8BB055F92DBFB9B /* Pods-Moves.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Moves.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Moves/Pods-Moves.debug.xcconfig"; sourceTree = "<group>"; };
 		A5727674933003840BA19E35 /* Pods_MovesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA1FC8634C760F8C4B37DD99 /* Pods_Moves.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Moves.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -203,7 +203,7 @@
 			isa = PBXGroup;
 			children = (
 				9435F42A1F61177A0084D657 /* AppDelegate.swift */,
-				9435F42C1F61177A0084D657 /* ViewController.swift */,
+				94E62CC01F6584A300F4C3BB /* BaseViewController.swift */,
 				9435F4831F61DE230084D657 /* DetailViewController.swift */,
 				9435F42E1F61177A0084D657 /* Main.storyboard */,
 				9435F4311F61177A0084D657 /* Assets.xcassets */,
@@ -725,8 +725,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9435F42D1F61177A0084D657 /* ViewController.swift in Sources */,
+				94E62CC21F65870B00F4C3BB /* DetailViewController.swift in Sources */,
 				9435F42B1F61177A0084D657 /* AppDelegate.swift in Sources */,
+				94E62CC11F6584A300F4C3BB /* BaseViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -753,7 +754,6 @@
 				9435F4871F63A4B60084D657 /* Animator.swift in Sources */,
 				9435F47C1F6117E90084D657 /* VCAnimationCoordinator.swift in Sources */,
 				9435F4821F6118810084D657 /* SlideUpWithContextAnimator.swift in Sources */,
-				9435F4851F63285C0084D657 /* DetailViewController.swift in Sources */,
 				9435F4801F6118570084D657 /* SlideDownAnimator.swift in Sources */,
 				9435F47E1F6118130084D657 /* ModalPresenterDelegate.swift in Sources */,
 			);

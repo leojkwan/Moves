@@ -8,11 +8,20 @@
 
 import Foundation
 import UIKit
+import Moves
 
 public class DetailViewController: UIViewController {
   
   @IBOutlet public var detailItem: UIView!
   
+  @IBAction func dismiss(_ sender: Any) {
+    
+    self.dismiss(animated: true, completion: nil)
+  }
+  
+  deinit {
+    print("deallocating")
+  }
   override public func viewDidLoad() {
     super.viewDidLoad()
   }

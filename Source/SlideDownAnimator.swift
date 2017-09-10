@@ -3,7 +3,7 @@ import Foundation
 /*
  * This animated transitioning object slides modal DOWN under a screen's view.
  */
-public class SlideDownAnimator<PresentingVC: UIViewController, PresentedVC: UIViewController>: DismissAnimater<PresentingVC, PresentedVC> {
+public class SlideDownAnimator<PresentingViewController: UIViewController, PresentedViewController: UIViewController>: DismissAnimater<PresentingViewController, PresentedViewController> {
   
   public var contextualViews: [ContextualViewPair] = []
   public weak var delegate: ModalDismisserDelegate?
@@ -12,7 +12,7 @@ public class SlideDownAnimator<PresentingVC: UIViewController, PresentedVC: UIVi
     return duration
   }
   
-   open override func performAnimations(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC, completion: @escaping () -> ()) {
+   open override func performAnimations(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingViewController, to presentedVC: PresentedViewController, completion: @escaping () -> ()) {
     
     delegate?.willDismissModal()
     
