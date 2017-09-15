@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Observable.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-Moves.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -31,32 +36,6 @@
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
-	<dict>
-		<key>0F1F7EC428F30674A235B1B276830838</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>80B8D04197D43EB91ACFCAA1D68ADA6E</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>B8D887631F289E5023D8F13A54F6E51E</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>CD58117C815564ECAF9466B4CE6819CA</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>D5638BECCF04C1E59EC1DEBB776A123E</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-	</dict>
+	<dict/>
 </dict>
 </plist>

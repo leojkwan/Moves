@@ -5,20 +5,19 @@ import UIKit
 open class SlideUpWithContextAnimator<PresentingVC: UIViewController, PresentedVC: UIViewController>: PresentAnimater<PresentingVC, PresentedVC> {
   
   fileprivate var pan: UIPanGestureRecognizer?
-  
   fileprivate var presentingVCScale: CGFloat = 1
   fileprivate var verticalOffset: CGFloat
   fileprivate var sideOffset: CGFloat
   fileprivate var dismissOnBackgroundTap: Bool
   fileprivate var fromTop: Bool = true
   fileprivate var dimAlpha: CGFloat = 0.5
-  fileprivate var relativeSizeToParent: CGFloat
+  fileprivate var presentedHeight: CGFloat
   fileprivate var animationOptions: UIViewAnimationOptions = .curveLinear
   
   public required init(
     verticalOffset: CGFloat,
     fromTop: Bool = true,
-    relativeSizeToParent: CGFloat = 1,
+    presentedHeight: CGFloat,
     sideOffset: CGFloat = 20,
     duration: Double = 0.6,
     dismissOnBackgroundTap shouldDismiss: Bool = false,
@@ -27,7 +26,7 @@ open class SlideUpWithContextAnimator<PresentingVC: UIViewController, PresentedV
     self.fromTop = fromTop
     self.verticalOffset = verticalOffset
     self.sideOffset = sideOffset
-    self.relativeSizeToParent = relativeSizeToParent
+    self.presentedHeight = presentedHeight
     self.dismissOnBackgroundTap = shouldDismiss
     self.animationOptions = animationOptions
     super.init(duration: duration)
@@ -48,12 +47,9 @@ open class SlideUpWithContextAnimator<PresentingVC: UIViewController, PresentedV
     toView.layer.cornerRadius = 5
     toView.clipsToBounds = true
     
-    // Update toView size
-    let toViewHeight = containerView.bounds.height * relativeSizeToParent
-    
     toView.bounds.size = CGSize(
       width: containerView.bounds.width - sideOffset,
-      height: toViewHeight
+      height: presentedHeight
     )
     
     // Push beneath visible view
@@ -66,7 +62,7 @@ open class SlideUpWithContextAnimator<PresentingVC: UIViewController, PresentedV
   override open func completeAnimation(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC) {
     super.completeAnimation(using: transitionContext, from: presentingVC, to: presentedVC)
   }
-
+  
   
   open override func performAnimations(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC, completion: @escaping () -> ()) {
     super.performAnimations(using: transitionContext, from: presentingVC, to: presentedVC, completion: completion)

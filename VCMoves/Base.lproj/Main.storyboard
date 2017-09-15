@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13189.4" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13165.3"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Base View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -24,7 +29,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DY0-ep-d8x">
-                                <rect key="frame" x="154" y="310.5" width="120" height="120"/>
+                                <rect key="frame" x="154" y="330.5" width="120" height="120"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="DY0-ep-d8x" secondAttribute="height" id="3OP-sk-wl7"/>
@@ -38,17 +43,34 @@
                                     <action selector="transitionButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vbl-K7-tri"/>
                                 </connections>
                             </button>
+                            <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Text" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VY2-4h-H0d">
+                                <rect key="frame" x="66" y="41" width="68" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="VY2-4h-H0d" secondAttribute="height" multiplier="70:20" id="gr9-5t-erv"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="gr9-5t-erv"/>
+                                    </mask>
+                                </variation>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.99706631899999998" green="0.51223087310000004" blue="0.39859005809999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="DY0-ep-d8x" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="310.5" id="6ec-LB-qNw"/>
                             <constraint firstItem="uSY-b4-rQd" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="30" id="G0p-fe-KKs"/>
+                            <constraint firstItem="VY2-4h-H0d" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="66" id="N1d-0A-m6I"/>
+                            <constraint firstItem="VY2-4h-H0d" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="21" id="PnU-gE-YgH"/>
                             <constraint firstItem="uSY-b4-rQd" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="bC9-Tf-DlF"/>
                             <constraint firstAttribute="trailing" secondItem="DY0-ep-d8x" secondAttribute="trailing" constant="101" id="k3l-ic-Czk"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="item" destination="DY0-ep-d8x" id="EhV-ZJ-zNc"/>
+                        <outlet property="titleTextLabel" destination="VY2-4h-H0d" id="5hd-BJ-Akz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -68,7 +90,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zfh-qZ-NFT">
-                                <rect key="frame" x="190" y="40" width="50" height="50"/>
+                                <rect key="frame" x="190" y="60" width="50" height="50"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="zfh-qZ-NFT" secondAttribute="height" id="2RP-kK-J0E"/>
@@ -82,17 +104,34 @@
                                     <action selector="dismiss:" destination="7AL-8c-zzz" eventType="touchUpInside" id="90u-AX-gis"/>
                                 </connections>
                             </button>
+                            <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Text" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ODa-zZ-axF">
+                                <rect key="frame" x="88" y="274.5" width="199.5" height="58.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="ODa-zZ-axF" secondAttribute="height" multiplier="70:20" id="Ylj-a1-ulq"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="50"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Ylj-a1-ulq"/>
+                                    </mask>
+                                </variation>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.50601644468474782" green="1" blue="0.86470690680543205" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="zfh-qZ-NFT" secondAttribute="trailing" constant="135" id="4CW-vf-tC5"/>
                             <constraint firstItem="yEQ-Y8-YCe" firstAttribute="top" secondItem="W6g-l6-MyO" secondAttribute="bottom" constant="8" id="6JI-QH-N4l"/>
+                            <constraint firstItem="ufG-3c-wFJ" firstAttribute="top" secondItem="ODa-zZ-axF" secondAttribute="bottom" constant="334" id="9hv-xe-2YC"/>
                             <constraint firstItem="zfh-qZ-NFT" firstAttribute="top" secondItem="9LJ-Ov-GaJ" secondAttribute="topMargin" constant="40" id="CxA-iI-3Ee"/>
+                            <constraint firstItem="ODa-zZ-axF" firstAttribute="centerX" secondItem="9LJ-Ov-GaJ" secondAttribute="centerX" id="ogL-2Z-76w"/>
                             <constraint firstItem="yEQ-Y8-YCe" firstAttribute="leading" secondItem="9LJ-Ov-GaJ" secondAttribute="leadingMargin" constant="13" id="paj-pU-OXd"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="detailItem" destination="zfh-qZ-NFT" id="9sw-Rs-Win"/>
+                        <outlet property="detailTitleTextLabel" destination="ODa-zZ-axF" id="zVg-Gv-9vU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8pK-p4-qMF" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -15,14 +15,12 @@
 		9435F4321F61177A0084D657 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9435F4311F61177A0084D657 /* Assets.xcassets */; };
 		9435F4351F61177A0084D657 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9435F4331F61177A0084D657 /* LaunchScreen.storyboard */; };
 		9435F4401F61177A0084D657 /* VCMovesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435F43F1F61177A0084D657 /* VCMovesTests.swift */; };
-		9435F44B1F61177A0084D657 /* VCMovesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435F44A1F61177A0084D657 /* VCMovesUITests.swift */; };
 		9435F4661F6117910084D657 /* Moves.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9435F45D1F6117910084D657 /* Moves.framework */; };
 		9435F46D1F6117910084D657 /* MovesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435F46C1F6117910084D657 /* MovesTests.swift */; };
 		9435F46F1F6117910084D657 /* Moves.h in Headers */ = {isa = PBXBuildFile; fileRef = 9435F45F1F6117910084D657 /* Moves.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9435F4721F6117910084D657 /* Moves.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9435F45D1F6117910084D657 /* Moves.framework */; };
 		9435F4731F6117910084D657 /* Moves.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9435F45D1F6117910084D657 /* Moves.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9435F47C1F6117E90084D657 /* VCAnimationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435F47B1F6117E90084D657 /* VCAnimationCoordinator.swift */; };
-		9435F47E1F6118130084D657 /* ModalPresenterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435F47D1F6118130084D657 /* ModalPresenterDelegate.swift */; };
 		9435F4801F6118570084D657 /* SlideDownAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435F47F1F6118570084D657 /* SlideDownAnimator.swift */; };
 		9435F4821F6118810084D657 /* SlideUpWithContextAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435F4811F6118810084D657 /* SlideUpWithContextAnimator.swift */; };
 		9435F4871F63A4B60084D657 /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435F4861F63A4B60084D657 /* Animator.swift */; };
@@ -104,8 +102,6 @@
 		9435F43F1F61177A0084D657 /* VCMovesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCMovesTests.swift; sourceTree = "<group>"; };
 		9435F4411F61177A0084D657 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9435F4461F61177A0084D657 /* VCMovesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VCMovesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9435F44A1F61177A0084D657 /* VCMovesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCMovesUITests.swift; sourceTree = "<group>"; };
-		9435F44C1F61177A0084D657 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9435F45D1F6117910084D657 /* Moves.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Moves.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9435F45F1F6117910084D657 /* Moves.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Moves.h; sourceTree = "<group>"; };
 		9435F4601F6117910084D657 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -113,7 +109,6 @@
 		9435F46C1F6117910084D657 /* MovesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovesTests.swift; sourceTree = "<group>"; };
 		9435F46E1F6117910084D657 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9435F47B1F6117E90084D657 /* VCAnimationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VCAnimationCoordinator.swift; sourceTree = "<group>"; };
-		9435F47D1F6118130084D657 /* ModalPresenterDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalPresenterDelegate.swift; sourceTree = "<group>"; };
 		9435F47F1F6118570084D657 /* SlideDownAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideDownAnimator.swift; sourceTree = "<group>"; };
 		9435F4811F6118810084D657 /* SlideUpWithContextAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideUpWithContextAnimator.swift; sourceTree = "<group>"; };
 		9435F4831F61DE230084D657 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
@@ -178,7 +173,6 @@
 			children = (
 				9435F4291F61177A0084D657 /* VCMoves */,
 				9435F43E1F61177A0084D657 /* VCMovesTests */,
-				9435F4491F61177A0084D657 /* VCMovesUITests */,
 				9435F45E1F6117910084D657 /* Moves */,
 				9435F46B1F6117910084D657 /* MovesTests */,
 				9435F4281F61177A0084D657 /* Products */,
@@ -222,21 +216,11 @@
 			path = VCMovesTests;
 			sourceTree = "<group>";
 		};
-		9435F4491F61177A0084D657 /* VCMovesUITests */ = {
-			isa = PBXGroup;
-			children = (
-				9435F44A1F61177A0084D657 /* VCMovesUITests.swift */,
-				9435F44C1F61177A0084D657 /* Info.plist */,
-			);
-			path = VCMovesUITests;
-			sourceTree = "<group>";
-		};
 		9435F45E1F6117910084D657 /* Moves */ = {
 			isa = PBXGroup;
 			children = (
 				9435F45F1F6117910084D657 /* Moves.h */,
 				9435F4601F6117910084D657 /* Info.plist */,
-				9435F47D1F6118130084D657 /* ModalPresenterDelegate.swift */,
 				9435F47F1F6118570084D657 /* SlideDownAnimator.swift */,
 				9435F4811F6118810084D657 /* SlideUpWithContextAnimator.swift */,
 				9435F4861F63A4B60084D657 /* Animator.swift */,
@@ -514,9 +498,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-VCMoves/Pods-VCMoves-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Observable/Observable.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Observable.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -529,13 +516,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-VCMovesUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		408823E61D5681BEE675815E /* [CP] Check Pods Manifest.lock */ = {
@@ -544,13 +534,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-VCMovesTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8174CDEA81BC26F412FF237D /* [CP] Embed Pods Frameworks */ = {
@@ -559,9 +552,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-MovesTests/Pods-MovesTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Observable/Observable.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Observable.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -574,13 +570,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MovesTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9652E65114D450FC28B49333 /* [CP] Copy Pods Resources */ = {
@@ -679,13 +678,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-VCMoves-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E85C100AC6721DB90BD6471E /* [CP] Check Pods Manifest.lock */ = {
@@ -694,13 +696,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Moves-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F832D660C6F9A59FA90B7D93 /* [CP] Embed Pods Frameworks */ = {
@@ -743,7 +748,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9435F44B1F61177A0084D657 /* VCMovesUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -755,7 +759,6 @@
 				9435F47C1F6117E90084D657 /* VCAnimationCoordinator.swift in Sources */,
 				9435F4821F6118810084D657 /* SlideUpWithContextAnimator.swift in Sources */,
 				9435F4801F6118570084D657 /* SlideDownAnimator.swift in Sources */,
-				9435F47E1F6118130084D657 /* ModalPresenterDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,6 +12,7 @@ import Moves
 
 public class DetailViewController: UIViewController {
   
+  @IBOutlet public var detailTitleTextLabel: UILabel!
   @IBOutlet public var detailItem: UIView!
   
   @IBAction func dismiss(_ sender: Any) {

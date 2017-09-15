@@ -6,6 +6,7 @@ target 'Moves' do
   use_frameworks!
 
   # Pods for Moves
+  pod 'Observable', git: 'https://github.com/leojkwan/Observable'
 
   target 'MovesTests' do
     inherit! :search_paths
