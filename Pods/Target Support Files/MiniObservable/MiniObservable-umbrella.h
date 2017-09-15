@@ -10,7 +10,9 @@
 #endif
 #endif
 
+#import "MiniObservable.h"
+#import "Observable.h"
 
-FOUNDATION_EXPORT double Pods_VCMovesTestsVersionNumber;
-FOUNDATION_EXPORT const unsigned char Pods_VCMovesTestsVersionString[];
+FOUNDATION_EXPORT double MiniObservableVersionNumber;
+FOUNDATION_EXPORT const unsigned char MiniObservableVersionString[];
 

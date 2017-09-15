@@ -4,31 +4,13 @@
 target 'Moves' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
-
-  # Pods for Moves
-  pod 'Observable', git: 'https://github.com/leojkwan/Observable'
-
-  target 'MovesTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
+  
+  # Pods for VCMoves
+  pod 'MiniObservable', git: 'https://github.com/leojkwan/MiniObservable'
 end
 
 target 'VCMoves' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
-
-  # Pods for VCMoves
-
-  target 'VCMovesTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-  target 'VCMovesUITests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
+  
 end

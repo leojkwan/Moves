@@ -1,9 +1,9 @@
 {
-  "name": "Observable",
+  "name": "MiniObservable",
   "version": "1.1.0",
   "summary": "A micro-framework for native key value observable types.",
   "description": "Simple Observable Object & KVO Replacement. Read my blog post for more details: http://leojkwan.com/2017/03/observables-and-dispose-bags",
-  "homepage": "https://github.com/leojkwan/Observable",
+  "homepage": "https://github.com/leojkwan/MiniObservable",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
@@ -15,14 +15,13 @@
     "ios": "8.0"
   },
   "source": {
-    "git": "https://github.com/leojkwan/Observable.git",
+    "git": "https://github.com/leojkwan/MiniObservable.git",
     "tag": "1.1.0"
   },
   "source_files": [
-    "Observable",
-    "Observable/**/*.{h,m,swift}"
+    "MiniObservable",
+    "MiniObservable/**/*.{h,m,swift}"
   ],
-  "exclude_files": "Classes/Exclude",
   "pod_target_xcconfig": {
     "SWIFT_VERSION": "3"
   }

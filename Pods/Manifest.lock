@@ -1,21 +1,21 @@
 PODS:
-  - Observable (1.1.0)
+  - MiniObservable (1.1.0)
 
 DEPENDENCIES:
-  - Observable (from `https://github.com/leojkwan/Observable`)
+  - MiniObservable (from `https://github.com/leojkwan/MiniObservable`)
 
 EXTERNAL SOURCES:
-  Observable:
-    :git: https://github.com/leojkwan/Observable
+  MiniObservable:
+    :git: https://github.com/leojkwan/MiniObservable
 
 CHECKOUT OPTIONS:
-  Observable:
-    :commit: 8ffc57b849d9e33007452bf45b7507dd29cbd49c
-    :git: https://github.com/leojkwan/Observable
+  MiniObservable:
+    :commit: d473a803b42817d07da4e34e373dfc500847cc05
+    :git: https://github.com/leojkwan/MiniObservable
 
 SPEC CHECKSUMS:
-  Observable: c07aaf68090640eab4f7f0489675fd0923f9f1b4
+  MiniObservable: da468a0cbc7d1ca4df33e3eb68089a2d60a5f4c3
 
-PODFILE CHECKSUM: c47538bab32654c80ae38e2a61dab3b63ea46f41
+PODFILE CHECKSUM: 5db525bed94c4d077dc9a39e6562c60a0bc711fe
 
 COCOAPODS: 1.3.1

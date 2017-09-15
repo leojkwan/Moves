@@ -1,5 +1,5 @@
 import Foundation
-import Observable
+import MiniObservable
 import UIKit
 
 public enum AnimaterLifecycleEvent: CustomStringConvertible {

@@ -1,0 +1,6 @@
+framework module MiniObservable {
+  umbrella header "MiniObservable-umbrella.h"
+
+  export *
+  module * { export * }
+}

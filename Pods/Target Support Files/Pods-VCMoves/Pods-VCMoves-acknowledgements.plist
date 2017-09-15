@@ -40,7 +40,7 @@ THE SOFTWARE.
 			<key>License</key>
 			<string>MIT</string>
 			<key>Title</key>
-			<string>Observable</string>
+			<string>MiniObservable</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>

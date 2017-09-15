@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Observable.xcscheme</key>
+		<key>MiniObservable.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -14,22 +14,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-MovesTests.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods-VCMoves.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-VCMovesTests.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-VCMovesUITests.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

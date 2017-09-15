@@ -1,6 +1,6 @@
 import Foundation
 import UIKit
-import Observable
+import MiniObservable
 
 /// This object presents popup view controllers in modal fashion
 /// It implements the transitioning delegate method on behalf

@@ -43,7 +43,7 @@ public class SlideDownAnimator<PresentingVC: UIViewController, PresentedVC: UIVi
           fromView.alpha = 0
         }
         
-    } , completion: { [weak self] _ in
+    } , completion: { _ in
       
       // must call this to proceed to completing
       // view controller transition.
