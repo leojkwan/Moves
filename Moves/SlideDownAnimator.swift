@@ -5,16 +5,15 @@ import Foundation
  */
 public class SlideDownAnimator<PresentingVC: UIViewController, PresentedVC: UIViewController>: DismissAnimater<PresentingVC, PresentedVC> {
   
+  public var dimView: UIView?
   public var contextualViews: [ContextualViewPair] = []
-  public weak var delegate: ModalDismisserDelegate?
   
   public override func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
     return duration
   }
   
    open override func performAnimations(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC, completion: @escaping () -> ()) {
-    
-    delegate?.willDismissModal()
+    super.performAnimations(using: transitionContext, from: presentingVC, to: presentedVC, completion: completion)
     
     // Setup the transition
     let containerView = transitionContext.containerView
@@ -44,13 +43,12 @@ public class SlideDownAnimator<PresentingVC: UIViewController, PresentedVC: UIVi
           fromView.alpha = 0
         }
         
-    } , completion: { [weak self] _ in
+    } , completion: { _ in
       
       // must call this to proceed to completing
       // view controller transition.
       completion()
       
-      self?.delegate?.didDismissModal()
     })
     
   }

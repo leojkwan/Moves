@@ -1,6 +1,6 @@
 import Foundation
-
 import UIKit
+import MiniObservable
 
 /// This object presents popup view controllers in modal fashion
 /// It implements the transitioning delegate method on behalf
@@ -12,6 +12,7 @@ import UIKit
  */
 
 public protocol CustomPresenterDelegate: class {
+
 }
 
 public protocol CustomDismisserDelegate: class {
@@ -23,32 +24,29 @@ public typealias ContextualViewPair = (fromView: UIView, toView: UIView)
 open class PresentAnimater<T: UIViewController, U: UIViewController>: Animator<T, U>, CustomPresenterDelegate {}
 open class DismissAnimater<T: UIViewController, U: UIViewController>: Animator<T, U>, CustomDismisserDelegate {}
 
-open class MovesCoordinator<
-  Presenter: PresentAnimater<PresentingVC, PresentedVC>,
-  Dismisser: DismissAnimater<PresentingVC, PresentedVC>,
-  PresentingVC: UIViewController,
-  PresentedVC: UIViewController
->: NSObject, UIViewControllerTransitioningDelegate  {
+open class MovesCoordinator<Presenter: PresentAnimater<T, U>, Dismisser: DismissAnimater<T, U>, T, U>: NSObject, UIViewControllerTransitioningDelegate  {
   
-  fileprivate var dimBackground: UIView!
+  private let disposeBag = DisposeBag()
+  fileprivate var dimBackgroundView: UIView?
   fileprivate var originPoint: CGPoint!
   public let presenter: Presenter
   public var dismisser: Dismisser
   public let options: MovesConfiguration
   public let unwindContextualViewsOnDismiss: Bool = true
-  weak var presentedViewController: PresentedVC?
-  weak var presentingViewController: PresentingVC?
-  
+  weak var presentedViewController: U?
+  weak var presentingViewController: T?
   
   public struct MovesConfiguration {
     static func defaultConfig() -> MovesConfiguration {
       return MovesConfiguration(
-        dismissOnTap: true,
+        showBackgroundDimView: true,
+        dismissDimViewOnTap: true,
         presentedVCIsPannable: true
       )
     }
     
-    let dismissOnTap: Bool
+    let showBackgroundDimView: Bool
+    let dismissDimViewOnTap: Bool
     let presentedVCIsPannable: Bool
   }
   
@@ -59,15 +57,88 @@ open class MovesCoordinator<
     self.presenter = presenter
     self.dismisser = dismisser
     self.options = options
+    super.init()
+    
+    self.observeAnimatorLifeCycles(presenter: presenter, dismisser: dismisser)
   }
   
-  public func present(_ presentedVC: PresentedVC, presentingVC: PresentingVC, with registeredContextualViews: (()->([ContextualViewPair]))? = nil){
+  private func observeAnimatorLifeCycles(presenter: Presenter, dismisser: Dismisser) {
+    
+    // Observe presenter
+    presenter.events.observe { [weak self] (_, newEvent) in
+      
+      guard let strongSelf = self else { return }
+      guard let event = newEvent else { return }
+      
+      
+      switch event {
+      case .transitionAnimating(let transitionContext):
+        if strongSelf.options.showBackgroundDimView {
+          strongSelf.handleBackgroundDimView(isPresenting: true, transitionContext: transitionContext)
+        }
+      default:
+        break
+      }
+    }.disposed(by: disposeBag)
+    
+    
+    // Observe dismisser
+    dismisser.events.observe { [weak self] (_, newEvent) in
+      
+      guard let strongSelf = self else { return }
+      guard let event = newEvent else { return }
+      
+      
+      switch event {
+      case .transitionAnimating(let transitionContext):
+        if strongSelf.options.showBackgroundDimView {
+          strongSelf.handleBackgroundDimView(isPresenting: false, transitionContext: transitionContext)
+        }
+      default:
+        break
+      }
+      }.disposed(by: disposeBag)
+  }
+  
+  private func handleBackgroundDimView(isPresenting: Bool, transitionContext: UIViewControllerContextTransitioning) {
+    
+    if isPresenting {
+      guard let toView = transitionContext.view(forKey: .to) else { return }
+      guard dimBackgroundView == nil else { return }
+
+      let containerView = transitionContext.containerView
+      
+      // Create dim view
+      let dimView = UIView(frame: containerView.bounds)
+      dimView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+      dimView.backgroundColor = UIColor(white: 0.0, alpha: 0)
+      containerView.insertSubview(dimView, belowSubview: toView)
+      
+      // Add gesture recognizer to remove dim view
+      if options.dismissDimViewOnTap {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dimBackgroundTapped))
+        dimView.addGestureRecognizer(tap)
+      }
+      
+      // keep reference to dim view for future dismissal
+      dimBackgroundView = dimView
+      
+      UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
+        dimView.backgroundColor = UIColor(white: 0.0, alpha: 0.7)
+      }, completion: nil)
+      
+    } else {
+      self.removeDim(duration: self.dismisser.duration)
+    }
+  }
+  
+  public func present(_ presentedVC: U, presentingVC: T, with registeredContextualViews: (()->([ContextualViewPair]))? = nil){
     
     self.presenter.registeredContextualViews = registeredContextualViews
-    
     self.presentedViewController = presentedVC
     self.presentingViewController = presentingVC
     
+    // Register the same contextual views on the dismiss back, the animation are flip flopped.
     if unwindContextualViewsOnDismiss {
       dismisser.registeredContextualViews = registeredContextualViews
     }
@@ -101,38 +172,25 @@ open class MovesCoordinator<
   }
   
   private func removeDim(duration: TimeInterval) {
+    
     UIView.animate(withDuration: duration, delay: 0, options: [], animations: { [weak self] in
+      
       guard let strongSelf = self else { return }
-      strongSelf.dimBackground.backgroundColor = UIColor(white: 0.0, alpha: 0)
-      }, completion: nil)
+      
+      strongSelf.dimBackgroundView?.backgroundColor = UIColor(white: 0.0, alpha: 0)
+      }, completion: { [weak self] _ in
+        
+        guard let strongSelf = self else { return }
+        
+        strongSelf.dimBackgroundView?.removeFromSuperview()
+        strongSelf.dimBackgroundView = nil
+    })
   }
   
   internal func dimBackgroundTapped() {
-    // Register listener to dimView to dismiss on tap
-    if options.dismissOnTap {
-      removeDim(duration: 1)
-    }
+    // Dismiss presented view controller
+    presentedViewController?.dismiss(animated: true, completion: nil)
   }
-  
-  private func presentDimIfNecessary(using transitionContext: UIViewControllerContextTransitioning) {
-    let toView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
-    let containerView = transitionContext.containerView
-    
-    // Create dim view
-    dimBackground = UIView(frame: containerView.bounds)
-    dimBackground.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-    dimBackground.backgroundColor = UIColor(white: 0.0, alpha: 0.0)
-    containerView.insertSubview(dimBackground, belowSubview: toView)
-    
-    // Add gesture recognizer to dim view
-    let tap = UITapGestureRecognizer(target: self, action: #selector(dimBackgroundTapped))
-    dimBackground.addGestureRecognizer(tap)
-    
-    UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
-      self.dimBackground.backgroundColor = UIColor(white: 0.0, alpha: 0.7)
-    }, completion: nil)
-  }
-  
   
   public func resize(
     verticalOffset: CGFloat,
@@ -140,9 +198,7 @@ open class MovesCoordinator<
     relativeSizeToParent: CGFloat = 1,
     sideOffset: CGFloat = 20
     ){
-    
-    //    guard let transitionContext = self.transitionContext else { return }
-    
+
     guard let fromVC = presentingViewController,
       let toVC = presentedViewController else { return }
     

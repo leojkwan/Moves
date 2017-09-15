@@ -1,10 +1,39 @@
 import Foundation
+import MiniObservable
 import UIKit
+
+public enum AnimaterLifecycleEvent: CustomStringConvertible {
+  case transitionWillAnimate(transitionContext: UIViewControllerContextTransitioning)
+  case transitionAnimating(transitionContext: UIViewControllerContextTransitioning)
+  case transitionDidAnimate(transitionContext: UIViewControllerContextTransitioning)
+  
+  public var description: String {
+    switch self {
+    case .transitionAnimating:
+      return "transition animating"
+    case .transitionWillAnimate:
+      return "transition will animate"
+    case .transitionDidAnimate:
+      return "transition did animate"
+    }
+  }
+}
+
+extension AnimaterLifecycleEvent: Equatable {}
+public func ==(lhs: AnimaterLifecycleEvent, rhs: AnimaterLifecycleEvent) -> Bool {
+  return lhs.description == rhs.description
+}
+
 
 open class Animator<PresentingVC: UIViewController, PresentedVC: UIViewController>: NSObject, UIViewControllerAnimatedTransitioning {
   
+  public let events: Observable<AnimaterLifecycleEvent?> = Observable(nil)
   public let duration: Double
   public var registeredContextualViews: (() -> ([ContextualViewPair]))?
+  
+  public var isPresenter: Bool {
+    return self is CustomPresenterDelegate
+  }
   
   public init(duration: Double) {
     self.duration = duration
@@ -15,15 +44,18 @@ open class Animator<PresentingVC: UIViewController, PresentedVC: UIViewControlle
   }
   
   open func prepareAnimationBlock(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC) {
-    //
+    events.value = AnimaterLifecycleEvent.transitionWillAnimate(transitionContext: transitionContext)
   }
   
   open func performAnimations(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC, completion: @escaping ()-> ()) {
+    events.value = AnimaterLifecycleEvent.transitionAnimating(transitionContext: transitionContext)
+    
     // Should be subclassed; here we define how the presented view controller
     // is animated in while the presenting view controller is animated out.
   }
   
   open func completeAnimation(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC) {
+    events.value = AnimaterLifecycleEvent.transitionDidAnimate(transitionContext: transitionContext)
     transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
     
   }
@@ -76,7 +108,6 @@ open class Animator<PresentingVC: UIViewController, PresentedVC: UIViewControlle
       let destinationView = isPresenting ? viewConfig.toView : viewConfig.fromView
       
       let snapshot = startingView.snapshotView(afterScreenUpdates: isPresenting)!
-      
       let startingFrame = startingVC.view.convert(startingView.frame, to: canvas)
       let startingCenter = startingVC.view.convert(startingView.center, to: canvas)
       
@@ -88,30 +119,23 @@ open class Animator<PresentingVC: UIViewController, PresentedVC: UIViewControlle
       startingView.alpha = 0
       destinationView.alpha = 0
       
-      UIView.animateKeyframes(
-        withDuration: self.duration,
-        delay: 0,
-        options: UIViewKeyframeAnimationOptions.calculationModeLinear,
-        animations: {
-          UIView.addKeyframe(
-            withRelativeStartTime: 0,
-            relativeDuration: self.duration) {
-              
-              let frame = destinationVC.view.convert(destinationView.frame, to: canvas)
-              let center = destinationVC.view.convert(destinationView.center, to: canvas)
-              
-              snapshot.frame = frame
-              snapshot.center = center
-          }
+      UIView.animate(withDuration: self.duration, delay: 0, options: [
+        .curveEaseInOut,
+        .allowAnimatedContent
+        ], animations: {
           
-      }) { _ in
+          let frame = destinationVC.view.convert(destinationView.frame, to: canvas)
+          let center = destinationVC.view.convert(destinationView.center, to: canvas)
+          
+          snapshot.frame = frame
+          snapshot.center = center
+          
+      }, completion: {  _ in
         
         destinationView.alpha = 1
         canvas.removeFromSuperview()
-      }
+      })
+    
     }
   }
-  
-  
-  
 }
