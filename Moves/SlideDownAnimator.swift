@@ -48,7 +48,6 @@ public class SlideDownAnimator<PresentingVC: UIViewController, PresentedVC: UIVi
       // must call this to proceed to completing
       // view controller transition.
       completion()
-      
     })
     
   }
