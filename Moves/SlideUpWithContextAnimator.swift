@@ -2,9 +2,9 @@ import Foundation
 import Foundation
 import UIKit
 
-open class SlideUpWithContextAnimator<PresentingVC: UIViewController, PresentedVC: UIViewController>: PresentAnimater<PresentingVC, PresentedVC> {
+
+open class SlideUpWithContextAnimator<PresentingVC: UIViewController, PresentedVC: UIViewController>: Animator<PresentingVC, PresentedVC> {
   
-  fileprivate var pan: UIPanGestureRecognizer?
   fileprivate var presentingVCScale: CGFloat = 1
   fileprivate var verticalOffset: CGFloat
   fileprivate var sideOffset: CGFloat
@@ -29,11 +29,7 @@ open class SlideUpWithContextAnimator<PresentingVC: UIViewController, PresentedV
     self.presentedHeight = presentedHeight
     self.dismissOnBackgroundTap = shouldDismiss
     self.animationOptions = animationOptions
-    super.init(duration: duration)
-  }
-  
-  func disablePan(disable: Bool) {
-    pan?.isEnabled = !disable
+    super.init(isPresenter: true, duration: duration)
   }
   
   override open func prepareAnimationBlock(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC) {
@@ -44,13 +40,24 @@ open class SlideUpWithContextAnimator<PresentingVC: UIViewController, PresentedV
     let containerView = transitionContext.containerView
     let toView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
     containerView.addSubview(toView)
-    toView.layer.cornerRadius = 5
-    toView.clipsToBounds = true
     
     toView.bounds.size = CGSize(
       width: containerView.bounds.width - sideOffset,
       height: presentedHeight
     )
+    
+    // Add Corner Radius to presenting view
+    // Round top corners
+    let maskLayer = CAShapeLayer()
+    
+    maskLayer.path = UIBezierPath(
+      roundedRect:toView.bounds,
+      byRoundingCorners:[.topRight, .topLeft],
+      cornerRadii: CGSize(width: 15, height:  15)
+      ).cgPath
+    
+    toView.layer.mask = maskLayer
+    
     
     // Push beneath visible view
     toView.center = CGPoint(

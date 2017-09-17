@@ -24,18 +24,15 @@ public func ==(lhs: AnimaterLifecycleEvent, rhs: AnimaterLifecycleEvent) -> Bool
   return lhs.description == rhs.description
 }
 
-
 open class Animator<PresentingVC: UIViewController, PresentedVC: UIViewController>: NSObject, UIViewControllerAnimatedTransitioning {
   
   public let events: Observable<AnimaterLifecycleEvent?> = Observable(nil)
   public let duration: Double
   public var registeredContextualViews: (() -> ([ContextualViewPair]))?
+  public let isPresenter: Bool
   
-  public var isPresenter: Bool {
-    return self is CustomPresenterDelegate
-  }
-  
-  public init(duration: Double) {
+  public init(isPresenter: Bool, duration: Double) {
+    self.isPresenter = isPresenter
     self.duration = duration
   }
   
@@ -62,9 +59,21 @@ open class Animator<PresentingVC: UIViewController, PresentedVC: UIViewControlle
   
   open func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
     
-    let fromVC =  transitionContext.viewController(forKey: self is CustomPresenterDelegate ? .from : .to) as! PresentingVC
-    let toVC = transitionContext.viewController(forKey: self is CustomPresenterDelegate ? .to : .from) as! PresentedVC
-    let isPresenting = self is CustomPresenterDelegate
+    let presentingViewController: PresentingVC!
+    
+    if let fromVC = transitionContext.viewController(forKey: isPresenter ? .from : .to) as? PresentingVC {
+      presentingViewController = fromVC
+    } else if let fromVCNav = transitionContext.viewController(forKey: isPresenter ? .from : .to) as? UINavigationController,
+      let embeddedFromVC = fromVCNav.topViewController as? PresentingVC {
+      presentingViewController = embeddedFromVC
+      // if a presenting view controller is embedded from a navigation controller, a modal presentation will present from the root navigation
+      // type check this common edge case.
+    } else {
+      // could not perform animation
+      return
+    }
+    
+    let toVC = transitionContext.viewController(forKey: isPresenter ? .to : .from) as! PresentedVC
     
     // Animate Contextual Views before preparation and primary animations if animator is a dismissor.
     // Animate Contextual Views at the end if animator is presenter.
@@ -72,7 +81,7 @@ open class Animator<PresentingVC: UIViewController, PresentedVC: UIViewControlle
       
       if let contextualViews = registeredContextualViews?() {
         animateContextualViews(
-          isPresenting: isPresenting,
+          isPresenting: isPresenter,
           using: transitionContext,
           contextualViews: contextualViews
         )
@@ -83,59 +92,100 @@ open class Animator<PresentingVC: UIViewController, PresentedVC: UIViewControlle
       }
     }
     
-    if !isPresenting { animationContextualViewsIfNecessary() }
-    
-    prepareAnimationBlock(using: transitionContext, from: fromVC, to: toVC)
-    performAnimations(using: transitionContext, from: fromVC, to: toVC) { [weak self] in
-      self?.completeAnimation(using: transitionContext, from: fromVC, to: toVC)
+    if !isPresenter { animationContextualViewsIfNecessary() }
+    prepareAnimationBlock(using: transitionContext, from: presentingViewController, to: toVC)
+    performAnimations(using: transitionContext, from: presentingViewController, to: toVC) { [weak self] in
+      self?.completeAnimation(using: transitionContext, from: presentingViewController, to: toVC)
     }
-    
-    if isPresenting { animationContextualViewsIfNecessary() }
+    if isPresenter { animationContextualViewsIfNecessary() }
   }
   
   private func animateContextualViews(isPresenting: Bool, using transitionContext: UIViewControllerContextTransitioning, contextualViews: [ContextualViewPair]) {
     
-    let startingVC = transitionContext.viewController(forKey: .from)!
-    let destinationVC = transitionContext.viewController(forKey: .to)!
-    
     let container = transitionContext.containerView
-    let canvas = UIView(frame: container.bounds)
-    container.addSubview(canvas)
     
     for viewConfig in contextualViews {
       
-      let startingView = isPresenting ? viewConfig.fromView : viewConfig.toView
-      let destinationView = isPresenting ? viewConfig.toView : viewConfig.fromView
+      let canvas = UIView(frame: container.bounds)
+      container.addSubview(canvas)
       
-      let snapshot = startingView.snapshotView(afterScreenUpdates: isPresenting)!
-      let startingFrame = startingVC.view.convert(startingView.frame, to: canvas)
-      let startingCenter = startingVC.view.convert(startingView.center, to: canvas)
+      let startingContextualView = isPresenting ? viewConfig.fromView : viewConfig.toView
+      let destinationContextualView = isPresenting ? viewConfig.toView : viewConfig.fromView
       
-      snapshot.frame = startingFrame
-      snapshot.center = startingCenter
+      guard let snapshot = startingContextualView.snapshotView(afterScreenUpdates: true) else {
+        continue
+      }
       
-      canvas.addSubview(snapshot)
+      var startingAnimationFrame: CGRect = startingContextualView.frame
+      var startingAnimationCenter: CGPoint = startingContextualView.center
+      var currentSuperView: UIView = startingContextualView.superview!
       
-      startingView.alpha = 0
-      destinationView.alpha = 0
+      func completeAnimation() {
+        DispatchQueue.main.async {
+          destinationContextualView.alpha = 1
+          canvas.removeFromSuperview()
+        }
+      }
       
-      UIView.animate(withDuration: self.duration, delay: 0, options: [
-        .curveEaseInOut,
-        .allowAnimatedContent
-        ], animations: {
-          
-          let frame = destinationVC.view.convert(destinationView.frame, to: canvas)
-          let center = destinationVC.view.convert(destinationView.center, to: canvas)
-          
-          snapshot.frame = frame
-          snapshot.center = center
-          
-      }, completion: {  _ in
+      // Put initial and destination frame calculation for each contextual view
+      // in an async DispatchQueue.
+      DispatchQueue.global(qos: .userInitiated).async {
         
-        destinationView.alpha = 1
-        canvas.removeFromSuperview()
-      })
-    
+        while currentSuperView.superview != canvas {
+          
+          guard let animationSuperviewSuperView = currentSuperView.superview else { break }
+          let convertedFrame = currentSuperView.convert(startingAnimationFrame, to: animationSuperviewSuperView)
+          let convertedCenter = currentSuperView.convert(startingAnimationCenter, to: animationSuperviewSuperView)
+          startingAnimationFrame = convertedFrame
+          startingAnimationCenter = convertedCenter
+          currentSuperView = animationSuperviewSuperView
+        }
+        
+        if let startingViewControllerView = transitionContext.view(forKey: .from),
+          startingViewControllerView.bounds.contains(startingAnimationFrame) == false {
+          // Contextual view is completely outside it's containing view controller .
+          // Do not animate and clean up transition
+          completeAnimation()
+          return
+        }
+        
+        var destinationFrame: CGRect = destinationContextualView.frame
+        var destinationCenter: CGPoint = destinationContextualView.center
+        var currentDestinationSuperView: UIView = destinationContextualView.superview!
+        
+        while currentDestinationSuperView.superview != canvas {
+          
+          guard let animationSuperviewSuperView = currentDestinationSuperView.superview else { break }
+          let convertedFrame = currentDestinationSuperView.convert(destinationFrame, to: animationSuperviewSuperView)
+          let convertedCenter = currentDestinationSuperView.convert(destinationCenter, to: animationSuperviewSuperView)
+          destinationFrame = convertedFrame
+          destinationCenter = convertedCenter
+          currentDestinationSuperView = animationSuperviewSuperView
+        }
+        
+        DispatchQueue.main.async {
+          
+          snapshot.frame = startingAnimationFrame
+          snapshot.center = startingAnimationCenter
+          
+          canvas.addSubview(snapshot)
+          
+          startingContextualView.alpha = 0
+          destinationContextualView.alpha = 0
+          
+          UIView.animate(withDuration: self.duration, delay: 0, options: [
+            .curveEaseInOut,
+            .allowAnimatedContent
+            ], animations: {
+              
+              snapshot.frame = destinationFrame
+              snapshot.center = destinationCenter
+              
+          }, completion: {  _ in
+            completeAnimation()
+          })
+        }
+      }
     }
   }
 }
