@@ -18,6 +18,6 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/leojkwan/Moves.git", :tag => s.version.to_s }
   s.source_files  = "Moves", "Moves/**/*.{h,m,swift}"
   s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4' }
-  s.dependency 'MiniObservable' , '~> 1.1.0'
+  s.dependency 'MiniObservable' , '~> 1.2.0'
 
 end
