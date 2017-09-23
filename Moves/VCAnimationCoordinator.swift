@@ -221,7 +221,7 @@ open class MovesCoordinator<Presenter: Animator<T, U>, Dismisser: Animator<T, U>
     })
   }
   
-  internal func dimBackgroundTapped() {
+  @objc func dimBackgroundTapped() {
     // Dismiss presented view controller
     presentedViewController?.dismiss(animated: true, completion: nil)
   }
@@ -260,7 +260,7 @@ open class MovesCoordinator<Presenter: Animator<T, U>, Dismisser: Animator<T, U>
     toVC.endAppearanceTransition()
   }
   
-  internal func handlePan(_ gesture: UIPanGestureRecognizer) {
+  @objc func handlePan(_ gesture: UIPanGestureRecognizer) {
     
     guard let presentedVC = presentedViewController else { return }
     guard let toView = gesture.view else { return }
