@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "Moves"
-  s.version      = "1.4.0"
+  s.version      = "1.4.1"
   s.summary      = "A custom view controller transition manager with animatable subviews"
   s.description  = "A custom view controller transition manager with animatable subviews. Make subviews leap in context from one view controller to the next"
   s.homepage     = "https://github.com/leojkwan/Moves"
