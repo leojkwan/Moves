@@ -54,7 +54,6 @@ open class Animator<PresentingVC: UIViewController, PresentedVC: UIViewControlle
   open func completeAnimation(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC) {
     events.value = AnimaterLifecycleEvent.transitionDidAnimate(transitionContext: transitionContext)
     transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
-    
   }
   
   open func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -65,9 +64,14 @@ open class Animator<PresentingVC: UIViewController, PresentedVC: UIViewControlle
       presentingViewController = fromVC
     } else if let fromVCNav = transitionContext.viewController(forKey: isPresenter ? .from : .to) as? UINavigationController,
       let embeddedFromVC = fromVCNav.topViewController as? PresentingVC {
+      
+      /* type check this common edge case.
+       * if a presenting view controller is embedded
+       * from a navigation controller, a modal presentation
+       * will present from the root navigation.
+       */
+      
       presentingViewController = embeddedFromVC
-      // if a presenting view controller is embedded from a navigation controller, a modal presentation will present from the root navigation
-      // type check this common edge case.
     } else {
       // could not perform animation
       return
@@ -93,10 +97,13 @@ open class Animator<PresentingVC: UIViewController, PresentedVC: UIViewControlle
     }
     
     if !isPresenter { animationContextualViewsIfNecessary() }
+    
+    // Prepare, Perform, Complete animation lifecycles sequentially invoked
     prepareAnimationBlock(using: transitionContext, from: presentingViewController, to: toVC)
     performAnimations(using: transitionContext, from: presentingViewController, to: toVC) { [weak self] in
       self?.completeAnimation(using: transitionContext, from: presentingViewController, to: toVC)
     }
+
     if isPresenter { animationContextualViewsIfNecessary() }
   }
   
@@ -127,13 +134,10 @@ open class Animator<PresentingVC: UIViewController, PresentedVC: UIViewControlle
         }
       }
       
-      // Put initial and destination frame calculation for each contextual view
-      // in an async DispatchQueue.
-      DispatchQueue.global(qos: .userInitiated).async {
-        
         while currentSuperView.superview != canvas {
           
           guard let animationSuperviewSuperView = currentSuperView.superview else { break }
+          
           let convertedFrame = currentSuperView.convert(startingAnimationFrame, to: animationSuperviewSuperView)
           let convertedCenter = currentSuperView.convert(startingAnimationCenter, to: animationSuperviewSuperView)
           startingAnimationFrame = convertedFrame
@@ -163,29 +167,26 @@ open class Animator<PresentingVC: UIViewController, PresentedVC: UIViewControlle
           currentDestinationSuperView = animationSuperviewSuperView
         }
         
-        DispatchQueue.main.async {
-          
-          snapshot.frame = startingAnimationFrame
-          snapshot.center = startingAnimationCenter
-          
-          canvas.addSubview(snapshot)
-          
-          startingContextualView.alpha = 0
-          destinationContextualView.alpha = 0
-          
-          UIView.animate(withDuration: self.duration, delay: 0, options: [
-            .curveEaseInOut,
-            .allowAnimatedContent
-            ], animations: {
-              
-              snapshot.frame = destinationFrame
-              snapshot.center = destinationCenter
-              
-          }, completion: {  _ in
-            completeAnimation()
-          })
-        }
+        
+        snapshot.frame = startingAnimationFrame
+        snapshot.center = startingAnimationCenter
+        
+        canvas.addSubview(snapshot)
+        
+        startingContextualView.alpha = 0
+        destinationContextualView.alpha = 0
+        
+        UIView.animate(withDuration: self.duration, delay: 0, options: [
+          .curveEaseInOut,
+          .allowAnimatedContent
+          ], animations: {
+            
+            snapshot.frame = destinationFrame
+            snapshot.center = destinationCenter
+            
+        }, completion: {  _ in
+          completeAnimation()
+        })
       }
-    }
   }
 }

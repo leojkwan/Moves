@@ -26,8 +26,6 @@ public class BaseViewController: UIViewController {
   
   @IBAction func transitionButtonPressed(_ sender: Any) {
     
-    
-    
     let vc = storyboard!.instantiateViewController(withIdentifier: "vc2") as! DetailViewController
     
     movesCoordinator.present(vc, presentingVC: self, with: { [weak self] () -> ([ContextualViewPair]) in
@@ -40,13 +38,6 @@ public class BaseViewController: UIViewController {
         ContextualViewPair(strongSelf.titleTextLabel, vc.detailTitleTextLabel)
       ]
     })
-    
-    //    let delayTime = DispatchTime.now() + Double(Int64(2 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-    //
-    //    DispatchQueue.main.asyncAfter(deadline: delayTime) {
-    //      self.movesCoordinator?.resize(verticalOffset: self.view.bounds.height * 1/2, fromTop: true, relativeSizeToParent: 1/2, sideOffset: 20)
-    //    }
-    
   }
 }
 

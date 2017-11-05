@@ -11,67 +11,7 @@ public enum Direction {
   case down
 }
 
-public enum PannableMoveDirection {
-  case vertical
-  case horizontal
-  case free
-}
-
-public struct PannableMoveOptions {
-  static public func defaultOptions() -> PannableMoveOptions {
-    return PannableMoveOptions(
-      direction: PannableMoveDirection.free,
-      dismissRadiusThreshold: 50,
-      lockedDirections: []
-    )
-  }
-  
-  public let direction: PannableMoveDirection
-  public let dismissRadiusThreshold: CGFloat
-  public let lockedDirections: [Direction]
-  
-  public init(
-    direction: PannableMoveDirection,
-    dismissRadiusThreshold: CGFloat,
-    lockedDirections: [Direction]
-    ) {
-    self.direction = direction
-    self.dismissRadiusThreshold = dismissRadiusThreshold
-    self.lockedDirections = lockedDirections
-  }
-}
-
-
-public struct MovesConfiguration {
-  public static func defaultConfig() -> MovesConfiguration {
-    return MovesConfiguration(
-      showBackgroundDimView: true,
-      dismissDimViewOnTap: true,
-      presentedVCIsPannable: true,
-      panOptions: PannableMoveOptions.defaultOptions()
-    )
-  }
-  
-  public let showBackgroundDimView: Bool
-  public let dismissDimViewOnTap: Bool
-  public let presentedVCIsPannable: Bool
-  public let panOptions: PannableMoveOptions
-  
-  public init(
-    showBackgroundDimView: Bool,
-    dismissDimViewOnTap: Bool,
-    presentedVCIsPannable: Bool,
-    panOptions: PannableMoveOptions
-    ) {
-    self.showBackgroundDimView = showBackgroundDimView
-    self.dismissDimViewOnTap = dismissDimViewOnTap
-    self.presentedVCIsPannable = presentedVCIsPannable
-    self.panOptions = panOptions
-  }
-}
-
-
-open class MovesCoordinator<Presenter: Animator<T, U>, Dismisser: Animator<T, U>, T, U>: NSObject, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate  {
+open class MovesCoordinator<Presenter: Animator<T, U>, Dismisser: Animator<T, U>, T, U>: NSObject, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate {
   
   private let disposeBag = DisposeBag()
   fileprivate var dimBackgroundView: UIView?
@@ -197,30 +137,6 @@ open class MovesCoordinator<Presenter: Animator<T, U>, Dismisser: Animator<T, U>
     }
   }
   
-  public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-    return presenter
-  }
-  
-  public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-    return dismisser
-  }
-  
-  private func removeDim(duration: TimeInterval) {
-    
-    UIView.animate(withDuration: duration, delay: 0, options: [], animations: { [weak self] in
-      
-      guard let strongSelf = self else { return }
-      
-      strongSelf.dimBackgroundView?.backgroundColor = UIColor(white: 0.0, alpha: 0)
-      }, completion: { [weak self] _ in
-        
-        guard let strongSelf = self else { return }
-        
-        strongSelf.dimBackgroundView?.removeFromSuperview()
-        strongSelf.dimBackgroundView = nil
-    })
-  }
-  
   @objc func dimBackgroundTapped() {
     // Dismiss presented view controller
     presentedViewController?.dismiss(animated: true, completion: nil)
@@ -333,6 +249,33 @@ open class MovesCoordinator<Presenter: Animator<T, U>, Dismisser: Animator<T, U>
     }
   }
   
+  // Helpers
+  private func removeDim(duration: TimeInterval) {
+    
+    UIView.animate(withDuration: duration, delay: 0, options: [], animations: { [weak self] in
+      
+      guard let strongSelf = self else { return }
+      
+      strongSelf.dimBackgroundView?.backgroundColor = UIColor(white: 0.0, alpha: 0)
+      }, completion: { [weak self] _ in
+        
+        guard let strongSelf = self else { return }
+        
+        strongSelf.dimBackgroundView?.removeFromSuperview()
+        strongSelf.dimBackgroundView = nil
+    })
+  }
+  
+  // MARK: UIViewControllerTransitioningDelegate
+  public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    return presenter
+  }
+  
+  public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    return dismisser
+  }
+  
+  // MARK: UIGestureRecognizerDelegate
   public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
     if let scrollView = otherGestureRecognizer.view as? UIScrollView {
       if scrollView.contentOffset.y <= 0 {
