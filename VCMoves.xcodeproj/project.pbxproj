@@ -24,6 +24,7 @@
 		9435F4871F63A4B60084D657 /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435F4861F63A4B60084D657 /* Animator.swift */; };
 		948510B81FAEF04D008AF766 /* MovesConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 948510B71FAEF04D008AF766 /* MovesConfiguration.swift */; };
 		948510BA1FAEF0A8008AF766 /* PannableMoveOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 948510B91FAEF0A8008AF766 /* PannableMoveOptions.swift */; };
+		94C878421FB0A0ED000EDB88 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94C878411FB0A0ED000EDB88 /* MasterViewController.swift */; };
 		94E62CC11F6584A300F4C3BB /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94E62CC01F6584A300F4C3BB /* BaseViewController.swift */; };
 		94E62CC21F65870B00F4C3BB /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9435F4831F61DE230084D657 /* DetailViewController.swift */; };
 		F19715FA3519AE78F79E25AD /* Pods_VCMoves.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80043B10847F7F529C74EA5D /* Pods_VCMoves.framework */; };
@@ -109,6 +110,7 @@
 		9435F4861F63A4B60084D657 /* Animator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
 		948510B71FAEF04D008AF766 /* MovesConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovesConfiguration.swift; sourceTree = "<group>"; };
 		948510B91FAEF0A8008AF766 /* PannableMoveOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PannableMoveOptions.swift; sourceTree = "<group>"; };
+		94C878411FB0A0ED000EDB88 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		94E62CC01F6584A300F4C3BB /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		A42B9851C8BB055F92DBFB9B /* Pods-Moves.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Moves.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Moves/Pods-Moves.debug.xcconfig"; sourceTree = "<group>"; };
 		A5727674933003840BA19E35 /* Pods_MovesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -190,6 +192,7 @@
 			children = (
 				9435F42A1F61177A0084D657 /* AppDelegate.swift */,
 				94E62CC01F6584A300F4C3BB /* BaseViewController.swift */,
+				94C878411FB0A0ED000EDB88 /* MasterViewController.swift */,
 				9435F4831F61DE230084D657 /* DetailViewController.swift */,
 				9435F42E1F61177A0084D657 /* Main.storyboard */,
 				9435F4311F61177A0084D657 /* Assets.xcassets */,
@@ -570,6 +573,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94C878421FB0A0ED000EDB88 /* MasterViewController.swift in Sources */,
 				94E62CC21F65870B00F4C3BB /* DetailViewController.swift in Sources */,
 				9435F42B1F61177A0084D657 /* AppDelegate.swift in Sources */,
 				94E62CC11F6584A300F4C3BB /* BaseViewController.swift in Sources */,

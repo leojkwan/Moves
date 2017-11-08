@@ -19,29 +19,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Moves/VCAnimationCoordinator.swift"
-            timestampString = "531558385.226484"
+            filePath = "VCMoves/MasterViewController.swift"
+            timestampString = "531670291.656092"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "176"
-            endingLineNumber = "176"
-            landmarkName = "present(_:presentingVC:with:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Moves/Animator.swift"
-            timestampString = "531668764.856003"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "163"
-            endingLineNumber = "163"
-            landmarkName = "animateContextualViews(isPresenting:using:contextualViews:)"
+            startingLineNumber = "19"
+            endingLineNumber = "19"
+            landmarkName = "animationController(forDismissed:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

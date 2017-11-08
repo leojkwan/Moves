@@ -19,7 +19,6 @@ open class MovesCoordinator<Presenter: Animator<T, U>, Dismisser: Animator<T, U>
   public let presenter: Presenter
   public var dismisser: Dismisser
   public let config: MovesConfiguration
-  public let unwindContextualViewsOnDismiss: Bool = true
   weak var presentedViewController: U?
   weak var presentingViewController: T?
   
@@ -111,8 +110,9 @@ open class MovesCoordinator<Presenter: Animator<T, U>, Dismisser: Animator<T, U>
     self.presentedViewController = presentedVC
     self.presentingViewController = presentingVC
     
-    // Register the same contextual views on the dismiss back, the animation are flip flopped.
-    if unwindContextualViewsOnDismiss {
+    // Register the same contextual views for the dismiss transition back.
+    // This animates contextual views back into place when dismissing.
+    if config.unwindContextualViewsOnDismiss {
       dismisser.registeredContextualViews = registeredContextualViews
     }
     
