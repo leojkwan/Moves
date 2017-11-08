@@ -1,11 +1,3 @@
-//
-//  MasterViewController.swift
-//  VCMoves
-//
-//  Created by Leo Kwan on 11/6/17.
-//  Copyright © 2017 Leo Kwan. All rights reserved.
-//
-
 import Foundation
 import UIKit
 
@@ -22,11 +14,31 @@ class MasterViewController: UIViewController, UIViewControllerTransitioningDeleg
   
   // MARK: UIViewControllerAnimatedTransitioning
   func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-    return 2
+    return 1
   }
   
   func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+    
     // ** Add your custom animation logic here **
+    
+    guard let fromVC = transitionContext.viewController(forKey: .from),
+      let toVC = transitionContext.viewController(forKey: .to) else { return }
+    
+    // Start with destination vc hidden
+    toVC.view.alpha = 0
+    
+    // Add toVC to container view of animation
+    transitionContext.containerView.addSubview(toVC.view)
+    toVC.view.frame = transitionContext.containerView.frame
+    
+    let totalDuration = self.transitionDuration(using: transitionContext)
+    
+    UIView.animate(withDuration: totalDuration, animations: {
+      fromVC.view.alpha = 0
+      toVC.view.alpha = 1
+    }) { _ in
+      transitionContext.completeTransition(true)
+    }
   }
   
   @IBAction func transitionButtonPressed(_ sender: Any) {
@@ -39,10 +51,8 @@ class MasterViewController: UIViewController, UIViewControllerTransitioningDeleg
 
 
 class ModalViewController: UIViewController {
-  //
   
   @IBAction func dismiss(_ sender: Any) {
-    
     self.dismiss(animated: true, completion: nil)
   }
 }

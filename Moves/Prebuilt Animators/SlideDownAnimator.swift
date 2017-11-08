@@ -54,7 +54,5 @@ public class SlideDownAnimator<PresentingVC: UIViewController, PresentedVC: UIVi
       completion()
       
     })
-    
   }
-  
 }

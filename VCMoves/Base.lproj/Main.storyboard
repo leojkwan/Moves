@@ -107,8 +107,8 @@
                                     <action selector="transitionButtonPressed:" destination="c8S-Uz-Oe4" eventType="touchUpInside" id="zpX-vk-qWm"/>
                                 </connections>
                             </button>
-                            <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Text" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aZ4-E9-q4j">
-                                <rect key="frame" x="66" y="41" width="68" height="20"/>
+                            <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Some Title Text" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aZ4-E9-q4j">
+                                <rect key="frame" x="66" y="41" width="117" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="aZ4-E9-q4j" secondAttribute="height" multiplier="70:20" id="bck-yt-DaW"/>
                                 </constraints>
@@ -135,7 +135,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WSY-D6-lkZ" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2" y="938"/>
+            <point key="canvasLocation" x="-2.5" y="937.5"/>
         </scene>
         <!--Detail View Controller-->
         <scene sceneID="3vd-6z-IHV">
@@ -219,7 +219,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I7Q-iL-ecJ">
-                                <rect key="frame" x="29" y="28" width="71" height="36"/>
+                                <rect key="frame" x="294" y="30" width="71" height="36"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
                                 <state key="normal" title="Dismiss">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -228,8 +228,8 @@
                                     <action selector="dismiss:" destination="Qfj-Rg-0Ju" eventType="touchUpInside" id="cqj-9C-jDG"/>
                                 </connections>
                             </button>
-                            <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Text" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wNg-zy-u5D">
-                                <rect key="frame" x="88" y="274.5" width="199.5" height="58.5"/>
+                            <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Some Title Text" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wNg-zy-u5D">
+                                <rect key="frame" x="16" y="274.5" width="344" height="59"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="wNg-zy-u5D" secondAttribute="height" multiplier="70:20" id="iVG-ys-LeU"/>
                                 </constraints>
@@ -245,10 +245,10 @@
                         </subviews>
                         <color key="backgroundColor" red="0.83008824479999999" green="0.83008824479999999" blue="0.83008824479999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="I7Q-iL-ecJ" firstAttribute="leading" secondItem="FaY-Hi-Tfd" secondAttribute="leadingMargin" constant="13" id="BIM-hx-zxh"/>
-                            <constraint firstItem="I7Q-iL-ecJ" firstAttribute="top" secondItem="K3N-XR-aVy" secondAttribute="bottom" constant="8" id="CG7-iV-1dh"/>
+                            <constraint firstItem="I7Q-iL-ecJ" firstAttribute="top" secondItem="K3N-XR-aVy" secondAttribute="bottom" constant="10" id="CG7-iV-1dh"/>
                             <constraint firstAttribute="trailing" secondItem="yPA-5o-oG2" secondAttribute="trailing" constant="135" id="CiO-M1-AE1"/>
                             <constraint firstItem="wNg-zy-u5D" firstAttribute="centerX" secondItem="FaY-Hi-Tfd" secondAttribute="centerX" id="DQ6-ky-oqx"/>
+                            <constraint firstAttribute="trailing" secondItem="I7Q-iL-ecJ" secondAttribute="trailing" constant="10" id="QEb-QT-fOl"/>
                             <constraint firstItem="ST0-Ox-0c0" firstAttribute="top" secondItem="wNg-zy-u5D" secondAttribute="bottom" constant="334" id="ZGq-qf-4UT"/>
                             <constraint firstItem="yPA-5o-oG2" firstAttribute="top" secondItem="FaY-Hi-Tfd" secondAttribute="topMargin" constant="40" id="mbA-SI-Tjw"/>
                         </constraints>

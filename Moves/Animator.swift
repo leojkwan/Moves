@@ -85,8 +85,7 @@ open class Animator<PresentingVC: UIViewController, PresentedVC: UIViewControlle
     
     if !isPresenter { animationContextualViewsIfNecessary() }
     
-    // Prepare, Perform, Complete animation lifecycles sequentially invoked
-    prepareAnimationBlock(using: transitionContext, from: presentingViewController, to: toVC)
+    // Perform & Complete animation lifecycles sequentially invoked
     performAnimations(using: transitionContext, from: presentingViewController, to: toVC) { [weak self] in
       self?.completeAnimation(using: transitionContext, from: presentingViewController, to: toVC)
     }
@@ -96,15 +95,13 @@ open class Animator<PresentingVC: UIViewController, PresentedVC: UIViewControlle
   
   
   // MARK: Animator
-  open func prepareAnimationBlock(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC) {
-    events.value = AnimaterLifecycleEvent.transitionWillAnimate(transitionContext: transitionContext)
-  }
   
   open func performAnimations(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC, completion: @escaping ()-> ()) {
     events.value = AnimaterLifecycleEvent.transitionAnimating(transitionContext: transitionContext)
     
-    // Should be subclassed; here we define how the presented view controller
-    // is animated in while the presenting view controller is animated out.
+    // Should be subclassed; here we define how
+    // the presented view controller is animated in
+    // while the presenting view controller is animated out.
   }
   
   open func completeAnimation(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC) {

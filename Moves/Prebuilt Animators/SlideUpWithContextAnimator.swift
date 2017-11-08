@@ -32,9 +32,8 @@ open class SlideUpWithContextAnimator<PresentingVC: UIViewController, PresentedV
     super.init(isPresenter: true, duration: duration)
   }
   
-  override open func prepareAnimationBlock(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC) {
-    
-    super.prepareAnimationBlock(using: transitionContext, from: presentingVC, to: presentedVC)
+  open override func performAnimations(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC, completion: @escaping () -> ()) {
+    super.performAnimations(using: transitionContext, from: presentingVC, to: presentedVC, completion: completion)
     
     // Setup the transition
     let containerView = transitionContext.containerView
@@ -58,22 +57,13 @@ open class SlideUpWithContextAnimator<PresentingVC: UIViewController, PresentedV
     
     toView.layer.mask = maskLayer
     
-    
     // Push beneath visible view
     toView.center = CGPoint(
       x: containerView.frame.midX,
       y: containerView.frame.midY + containerView.frame.height
     )
-  }
-  
-  override open func completeAnimation(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC) {
-    super.completeAnimation(using: transitionContext, from: presentingVC, to: presentedVC)
-  }
-  
-  
-  open override func performAnimations(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC, completion: @escaping () -> ()) {
-    super.performAnimations(using: transitionContext, from: presentingVC, to: presentedVC, completion: completion)
     
+    // Animate
     UIView.animateKeyframes(
       withDuration: duration,
       delay: 0,
@@ -108,5 +98,4 @@ open class SlideUpWithContextAnimator<PresentingVC: UIViewController, PresentedV
       completion()
     }
   }
-  
 }

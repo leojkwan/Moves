@@ -11,20 +11,22 @@ public enum Direction {
   case down
 }
 
-open class MovesCoordinator<Presenter: Animator<T, U>, Dismisser: Animator<T, U>, T, U>: NSObject, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate {
+open class MovesCoordinator<T: UIViewController, U: UIViewController>: NSObject, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate {
+  
+  public typealias VCAnimator = Animator<T, U>
   
   private let disposeBag = DisposeBag()
   fileprivate var dimBackgroundView: UIView?
   fileprivate var originPoint: CGPoint!
-  public let presenter: Presenter
-  public var dismisser: Dismisser
+  public let presenter: VCAnimator
+  public var dismisser: VCAnimator
   public let config: MovesConfiguration
   weak var presentedViewController: U?
   weak var presentingViewController: T?
   
   public init(
-    presenter: Presenter,
-    dismisser: Dismisser,
+    presenter: VCAnimator,
+    dismisser: VCAnimator,
     config: MovesConfiguration = MovesConfiguration.defaultConfig()) {
     self.presenter = presenter
     self.dismisser = dismisser
@@ -34,7 +36,7 @@ open class MovesCoordinator<Presenter: Animator<T, U>, Dismisser: Animator<T, U>
     self.observeAnimatorLifeCycles(presenter: presenter, dismisser: dismisser)
   }
   
-  private func observeAnimatorLifeCycles(presenter: Presenter, dismisser: Dismisser) {
+  private func observeAnimatorLifeCycles(presenter: VCAnimator, dismisser: VCAnimator) {
     
     // Observe presenter
     presenter.events.observe { [weak self] (_, newEvent) in

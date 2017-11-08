@@ -6,7 +6,8 @@ public class BaseViewController: UIViewController {
   @IBOutlet var titleTextLabel: UILabel!
   @IBOutlet var item: UIView!
   
-  lazy var movesCoordinator: MovesCoordinator<SlideUpWithContextAnimator<BaseViewController, DetailViewController>, SlideDownAnimator<BaseViewController, DetailViewController>, BaseViewController, DetailViewController> = {
+  lazy var movesCoordinator: MovesCoordinator<BaseViewController, DetailViewController> = {
+    
     let presenter = SlideUpWithContextAnimator<BaseViewController, DetailViewController>(
       verticalOffset: self.view.bounds.height * 2/15,
       presentedHeight: self.view.bounds.height * 13/15,
