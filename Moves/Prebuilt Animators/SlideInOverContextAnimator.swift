@@ -2,30 +2,24 @@ import Foundation
 import Foundation
 import UIKit
 
-
-open class SlideInAnimator<PresentingVC: UIViewController, PresentedVC: UIViewController>: Animator<PresentingVC, PresentedVC>, TransformAnimator {
+open class SlideInOverContextAnimator<PresentingVC: UIViewController, PresentedVC: UIViewController>: Animator<PresentingVC, PresentedVC>, TransformAnimator, ModalAnimator {
   
   fileprivate var presentingVCScale: CGFloat = 1
-  fileprivate var dismissOnBackgroundTap: Bool
-  fileprivate var dimAlpha: CGFloat = 0.5
+  fileprivate var slidingFrom: Direction
   
   fileprivate var animationOptions: UIViewAnimationOptions = .curveLinear
-  var modalConfig: ModalConfiguration
+  public var modalConfig: ModalConfiguration
   
   public required init(
+    slidingFrom: Direction,
     modalConfig: ModalConfiguration = ModalConfiguration(),
     duration: Double = 0.6,
-    dismissOnBackgroundTap shouldDismiss: Bool = false,
     animationOptions: UIViewAnimationOptions = .curveLinear
     ) {
+    self.slidingFrom = slidingFrom
     self.modalConfig = modalConfig
-    self.dismissOnBackgroundTap = shouldDismiss
     self.animationOptions = animationOptions
     super.init(isPresenter: true, duration: duration)
-  }
-  
-  func calculateToVCSizeAndFrame() {
-    
   }
   
   open override func performAnimations(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC, completion: @escaping () -> ()) {
@@ -36,10 +30,31 @@ open class SlideInAnimator<PresentingVC: UIViewController, PresentedVC: UIViewCo
     let toView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
     containerView.addSubview(toView)
     
-    toView.bounds.size = CGSize(
-      width: containerView.bounds.width - modalConfig.sideOffset,
+    // Define frame
+    toView.frame.size = CGSize(
+      width: modalConfig.width,
       height: modalConfig.height
     )
+    
+    let destininationModalOriginPoint = self.determineModalOriginPoint(from: containerView)
+    toView.frame.origin = destininationModalOriginPoint
+    
+    // Set initial frame by determining where modal is sliding from and
+    // setting appropriate center point such that modal begins out of view.
+    // Set non-translated origin point here so that slide animates on 1 axis
+    // only. This prevents any diagonal slides (subclass Animator on your own if you
+    // want that capability!)
+    switch slidingFrom {
+    case .up:
+      toView.frame.origin.y -= containerView.frame.height
+    case .down:
+      toView.frame.origin.y += containerView.frame.height
+    case .left:
+      toView.frame.origin.x -= containerView.frame.width
+    case .right:
+      toView.frame.origin.x += containerView.frame.width
+    }
+    
     
     // Add Corner Radius to presenting view
     let maskLayer = CAShapeLayer()
@@ -49,12 +64,6 @@ open class SlideInAnimator<PresentingVC: UIViewController, PresentedVC: UIViewCo
       cornerRadii: CGSize(width: modalConfig.roundedCornersRadius, height:  modalConfig.roundedCornersRadius)
       ).cgPath
     toView.layer.mask = maskLayer
-    
-    // Push beneath visible view
-    toView.center = CGPoint(
-      x: containerView.frame.midX,
-      y: containerView.frame.midY + containerView.frame.height
-    )
     
     // Animate
     UIView.animateKeyframes(
@@ -79,15 +88,7 @@ open class SlideInAnimator<PresentingVC: UIViewController, PresentedVC: UIViewCo
               y: strongSelf.presentingVCScale
             )
             
-            // Offset from top or bottom
-            switch strongSelf.modalConfig.verticalAlignment {
-            case .centered:
-            presentedVC.view.center.y  = containerView.frame.midY
-            case .top:
-              presentedVC.view.frame.origin.y = strongSelf.modalConfig.verticalOffset
-            case .bottom:
-              presentedVC.view.frame.origin.y = (transitionContext.containerView.bounds.maxY - presentedVC.view.bounds.height) - strongSelf.modalConfig.verticalOffset
-            }            
+            presentedVC.view.frame.origin = destininationModalOriginPoint
         }
         
     }) { _ in

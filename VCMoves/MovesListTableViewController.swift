@@ -1,27 +1,23 @@
 import UIKit
 
-public class MovesListTableViewController: UITableViewController {
+public enum MovesExample {
+  case fadeIn
+  case slideUpWithContext
   
-  enum MovesExample {
-    case fadeIn
-    case centerModal
-    case slideUpWithContext
-    
-    var title: String {
-      switch self {
-      case .fadeIn:
-        return "Fade In"
-      case .centerModal:
-        return "Center Modal"
-      case .slideUpWithContext:
-        return "Slide Up with Context"
-      }
+  var title: String {
+    switch self {
+    case .fadeIn:
+      return "Fade In"
+    case .slideUpWithContext:
+      return "Slide Up with Context"
     }
   }
+}
+
+public class MovesListTableViewController: UITableViewController {
   
   var moves: [MovesExample] = [
     .fadeIn,
-    .centerModal,
     .slideUpWithContext
   ]
   
@@ -29,11 +25,12 @@ public class MovesListTableViewController: UITableViewController {
     let moveForSelectedRow = self.moves[indexPath.row]
     switch moveForSelectedRow {
     case .fadeIn:
-      break
-    case .centerModal:
-      break
+      let vc = storyboard!.instantiateViewController(withIdentifier: "SlideUpWithContextViewController") as! SlideUpWithContextViewController
+      vc.example = .fadeIn
+      self.navigationController?.pushViewController(vc, animated: true)
     case .slideUpWithContext:
-      let vc = storyboard!.instantiateViewController(withIdentifier: "SlideUpWithContextViewController")
+      let vc = storyboard!.instantiateViewController(withIdentifier: "SlideUpWithContextViewController") as! SlideUpWithContextViewController
+      vc.example = .slideUpWithContext
       self.navigationController?.pushViewController(vc, animated: true)
     }
   }

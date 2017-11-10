@@ -3,16 +3,16 @@ import Foundation
 /*
  * This animated transitioning object slides modal DOWN under a screen's view.
  */
-public class SlideOutAnimator<PresentingVC: UIViewController, PresentedVC: UIViewController>: Animator<PresentingVC, PresentedVC> {
+public class SlideOutOverContextAnimator<PresentingVC: UIViewController, PresentedVC: UIViewController>: Animator<PresentingVC, PresentedVC> {
   
-  public var dimView: UIView?
-  public var contextualViews: [ContextualViewPair] = []
-  
+  fileprivate var slidingTo: Direction
+
   public override func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
     return duration
   }
   
-  public required init(duration: Double) {
+  public required init(slidingTo: Direction, duration: Double) {
+    self.slidingTo = slidingTo
     super.init(isPresenter: false, duration: duration)
   }
   
@@ -29,16 +29,18 @@ public class SlideOutAnimator<PresentingVC: UIViewController, PresentedVC: UIVie
       options: UIViewKeyframeAnimationOptions(),
       animations: {
         
-        // Slide View Down
-        UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: self.duration) {
-          fromView.center.y += containerView.frame.maxY
+        // Slide view out
+        switch self.slidingTo {
+        case .up:
+          fromView.frame.origin.y -= containerView.frame.height
+        case .down:
+          fromView.frame.origin.y += containerView.frame.height
+        case .left:
+          fromView.frame.origin.x -= containerView.frame.width
+        case .right:
+          fromView.frame.origin.x += containerView.frame.width
         }
-        
-        // Fade out
-        UIView.addKeyframe(withRelativeStartTime: 0.1, relativeDuration: self.duration - 0.1) {
-          fromView.alpha = 0
-        }
-        
+                
     } , completion: { _ in
       
       // must call this to proceed to completing

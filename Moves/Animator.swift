@@ -142,7 +142,7 @@ open class Animator<PresentingVC: UIViewController, PresentedVC: UIViewControlle
         }
         
         if let startingViewControllerView = transitionContext.view(forKey: .from),
-          startingViewControllerView.bounds.contains(startingAnimationFrame) == false {
+          startingViewControllerView.frame.contains(startingAnimationFrame) == false {
           // Contextual view is completely outside it's containing view controller .
           // Do not animate and clean up transition
           completeAnimation()
