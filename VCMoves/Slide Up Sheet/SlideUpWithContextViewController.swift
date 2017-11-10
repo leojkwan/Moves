@@ -26,7 +26,7 @@ public class SlideUpWithContextViewController: UIViewController {
       
       presenter = FadeInOverContextAnimator<UINavigationController, SlideUpWithContextModalViewController>(
         modalConfig: modalConfig,
-        duration: 0.5
+        duration: 3
       )
     case .slideUpWithContext:
       
@@ -48,7 +48,7 @@ public class SlideUpWithContextViewController: UIViewController {
     switch self.example {
     case MovesExample.fadeIn:
       
-      dismisser = FadeOutOverContextAnimator<UINavigationController, SlideUpWithContextModalViewController>(duration: 0.4)
+      dismisser = FadeOutOverContextAnimator<UINavigationController, SlideUpWithContextModalViewController>(duration: 3)
     case .slideUpWithContext:
       dismisser = SlideOutOverContextAnimator<UINavigationController, SlideUpWithContextModalViewController>(slidingTo: .down, duration: 0.4)
     }

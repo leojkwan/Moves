@@ -7,7 +7,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -57,14 +56,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ats-iz-JB5">
-                                <rect key="frame" x="154" y="220" width="120" height="120"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="ats-iz-JB5" secondAttribute="height" id="jjb-xp-iQy"/>
-                                    <constraint firstAttribute="width" constant="120" id="ozc-Fq-M62"/>
-                                </constraints>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ziy-y7-GLN">
                                 <rect key="frame" x="254" y="50" width="111" height="36"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
@@ -75,8 +66,8 @@
                                     <action selector="transitionButtonPressed:" destination="c8S-Uz-Oe4" eventType="touchUpInside" id="zpX-vk-qWm"/>
                                 </connections>
                             </button>
-                            <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Some Title Text" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aZ4-E9-q4j">
-                                <rect key="frame" x="66" y="50" width="117" height="20"/>
+                            <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I got the Moves" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aZ4-E9-q4j">
+                                <rect key="frame" x="66" y="50" width="119" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="aZ4-E9-q4j" secondAttribute="height" multiplier="70:20" id="bck-yt-DaW"/>
                                 </constraints>
@@ -89,25 +80,32 @@
                                     </mask>
                                 </variation>
                             </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dog" translatesAutoresizingMaskIntoConstraints="NO" id="IlQ-wD-UbV">
+                                <rect key="frame" x="39" y="144" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="X8I-di-fLI"/>
+                                    <constraint firstAttribute="width" secondItem="IlQ-wD-UbV" secondAttribute="height" id="jFi-d8-lTU"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="0.73307465999999999" blue="0.27294298109999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Ziy-y7-GLN" secondAttribute="trailing" constant="10" id="9aD-eh-mKL"/>
-                            <constraint firstItem="ats-iz-JB5" firstAttribute="top" secondItem="fPG-le-aci" secondAttribute="bottom" constant="200" id="AWn-18-ztp"/>
+                            <constraint firstItem="IlQ-wD-UbV" firstAttribute="top" secondItem="fPG-le-aci" secondAttribute="bottom" constant="124" id="ECW-0A-j2Q"/>
                             <constraint firstItem="aZ4-E9-q4j" firstAttribute="top" secondItem="fPG-le-aci" secondAttribute="bottom" constant="30" id="Trn-es-MxW"/>
-                            <constraint firstAttribute="trailing" secondItem="ats-iz-JB5" secondAttribute="trailing" constant="101" id="VdY-WF-QSs"/>
                             <constraint firstItem="aZ4-E9-q4j" firstAttribute="leading" secondItem="PkZ-fj-DFc" secondAttribute="leading" constant="66" id="d4i-ik-TgQ"/>
                             <constraint firstItem="Ziy-y7-GLN" firstAttribute="top" secondItem="fPG-le-aci" secondAttribute="bottom" constant="30" id="dy9-lC-hyf"/>
+                            <constraint firstItem="IlQ-wD-UbV" firstAttribute="leading" secondItem="PkZ-fj-DFc" secondAttribute="leading" constant="39" id="ngW-Ii-3ll"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="item" destination="ats-iz-JB5" id="RCd-wI-K6w"/>
+                        <outlet property="item" destination="IlQ-wD-UbV" id="9Va-3P-56O"/>
                         <outlet property="titleTextLabel" destination="aZ4-E9-q4j" id="3HP-IA-iyW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WSY-D6-lkZ" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-174" y="938"/>
+            <point key="canvasLocation" x="-175.19999999999999" y="937.78110944527748"/>
         </scene>
         <!--Slide Up With Context Modal View Controller-->
         <scene sceneID="3XO-mX-Q9U">
@@ -121,14 +119,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yPA-5o-oG2">
-                                <rect key="frame" x="190" y="60" width="50" height="50"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="jtZ-NF-l8q"/>
-                                    <constraint firstAttribute="width" secondItem="yPA-5o-oG2" secondAttribute="height" id="m8l-Ns-sNq"/>
-                                </constraints>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I7Q-iL-ecJ">
                                 <rect key="frame" x="294" y="30" width="71" height="36"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
@@ -139,8 +129,8 @@
                                     <action selector="dismiss:" destination="Qfj-Rg-0Ju" eventType="touchUpInside" id="cqj-9C-jDG"/>
                                 </connections>
                             </button>
-                            <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Some Title Text" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="none" minimumScaleFactor="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="wNg-zy-u5D">
-                                <rect key="frame" x="87.5" y="174" width="200" height="35"/>
+                            <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I got the Moves" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="none" minimumScaleFactor="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="wNg-zy-u5D">
+                                <rect key="frame" x="88" y="70" width="200" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="SM2-HH-TIT"/>
                                     <constraint firstAttribute="width" secondItem="wNg-zy-u5D" secondAttribute="height" multiplier="70:20" id="iVG-ys-LeU"/>
@@ -154,19 +144,27 @@
                                     </mask>
                                 </variation>
                             </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dog" translatesAutoresizingMaskIntoConstraints="NO" id="lxm-3B-L1X">
+                                <rect key="frame" x="112.5" y="258.5" width="150" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="VOS-RR-HNn"/>
+                                    <constraint firstAttribute="width" secondItem="lxm-3B-L1X" secondAttribute="height" id="jw2-mT-Aaz"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.83008824479999999" green="0.83008824479999999" blue="0.83008824479999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="wNg-zy-u5D" firstAttribute="top" secondItem="K3N-XR-aVy" secondAttribute="bottom" constant="50" id="A41-zD-k2j"/>
                             <constraint firstItem="I7Q-iL-ecJ" firstAttribute="top" secondItem="K3N-XR-aVy" secondAttribute="bottom" constant="10" id="CG7-iV-1dh"/>
-                            <constraint firstAttribute="trailing" secondItem="yPA-5o-oG2" secondAttribute="trailing" constant="135" id="CiO-M1-AE1"/>
                             <constraint firstItem="wNg-zy-u5D" firstAttribute="centerX" secondItem="FaY-Hi-Tfd" secondAttribute="centerX" id="DQ6-ky-oqx"/>
+                            <constraint firstItem="lxm-3B-L1X" firstAttribute="width" secondItem="lxm-3B-L1X" secondAttribute="height" id="Fby-eF-Uym"/>
+                            <constraint firstItem="lxm-3B-L1X" firstAttribute="centerX" secondItem="FaY-Hi-Tfd" secondAttribute="centerX" id="Q6g-gU-YAd"/>
                             <constraint firstAttribute="trailing" secondItem="I7Q-iL-ecJ" secondAttribute="trailing" constant="10" id="QEb-QT-fOl"/>
-                            <constraint firstItem="wNg-zy-u5D" firstAttribute="top" secondItem="yPA-5o-oG2" secondAttribute="bottom" constant="64" id="Ued-5A-zGO"/>
-                            <constraint firstItem="yPA-5o-oG2" firstAttribute="top" secondItem="FaY-Hi-Tfd" secondAttribute="topMargin" constant="40" id="mbA-SI-Tjw"/>
+                            <constraint firstItem="lxm-3B-L1X" firstAttribute="centerY" secondItem="FaY-Hi-Tfd" secondAttribute="centerY" id="tRU-V3-VWj"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="detailItem" destination="yPA-5o-oG2" id="yWe-pZ-W6a"/>
+                        <outlet property="detailItem" destination="lxm-3B-L1X" id="YFh-xI-6HK"/>
                         <outlet property="detailTitleTextLabel" destination="wNg-zy-u5D" id="HaC-kA-P1J"/>
                     </connections>
                 </viewController>
@@ -193,4 +191,7 @@
             <point key="canvasLocation" x="-1758" y="1648"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="dog" width="840" height="530"/>
+    </resources>
 </document>

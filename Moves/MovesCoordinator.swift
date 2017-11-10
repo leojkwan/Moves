@@ -101,7 +101,7 @@ open class MovesCoordinator<T: UIViewController, U: UIViewController>: NSObject,
       // keep reference to dim view for future dismissal
       dimBackgroundView = dimView
       
-      UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
+      UIView.animate(withDuration: self.presenter.duration, delay: 0, options: [], animations: {
         dimView.backgroundColor = UIColor(white: 0.0, alpha: 0.7)
       }, completion: nil)
       
