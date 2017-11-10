@@ -3,7 +3,7 @@ import Foundation
 /*
  * This animated transitioning object slides modal DOWN under a screen's view.
  */
-public class SlideDownAnimator<PresentingVC: UIViewController, PresentedVC: UIViewController>: Animator<PresentingVC, PresentedVC> {
+public class SlideOutAnimator<PresentingVC: UIViewController, PresentedVC: UIViewController>: Animator<PresentingVC, PresentedVC> {
   
   public var dimView: UIView?
   public var contextualViews: [ContextualViewPair] = []
@@ -22,20 +22,12 @@ public class SlideDownAnimator<PresentingVC: UIViewController, PresentedVC: UIVi
     // Setup the transition
     let containerView = transitionContext.containerView
     let fromView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
-    let presentingViewController = transitionContext.viewController(forKey: .to)!
     
     UIView.animateKeyframes(
       withDuration: self.duration,
       delay: 0.0,
       options: UIViewKeyframeAnimationOptions(),
       animations: {
-        
-        // ToView Scale back to 1
-        UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: self.duration) {
-          presentingViewController.view.alpha = 1
-          presentingViewController.view.transform = .identity
-          presentingViewController.view.layer.cornerRadius = 0
-        }
         
         // Slide View Down
         UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: self.duration) {

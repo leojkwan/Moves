@@ -3,33 +3,29 @@ import Foundation
 import UIKit
 
 
-open class SlideUpWithContextAnimator<PresentingVC: UIViewController, PresentedVC: UIViewController>: Animator<PresentingVC, PresentedVC> {
+open class SlideInAnimator<PresentingVC: UIViewController, PresentedVC: UIViewController>: Animator<PresentingVC, PresentedVC>, TransformAnimator {
   
   fileprivate var presentingVCScale: CGFloat = 1
-  fileprivate var verticalOffset: CGFloat
-  fileprivate var sideOffset: CGFloat
   fileprivate var dismissOnBackgroundTap: Bool
-  fileprivate var fromTop: Bool = true
   fileprivate var dimAlpha: CGFloat = 0.5
-  fileprivate var presentedHeight: CGFloat
+  
   fileprivate var animationOptions: UIViewAnimationOptions = .curveLinear
+  var modalConfig: ModalConfiguration
   
   public required init(
-    verticalOffset: CGFloat,
-    fromTop: Bool = true,
-    presentedHeight: CGFloat,
-    sideOffset: CGFloat = 20,
+    modalConfig: ModalConfiguration = ModalConfiguration(),
     duration: Double = 0.6,
     dismissOnBackgroundTap shouldDismiss: Bool = false,
     animationOptions: UIViewAnimationOptions = .curveLinear
     ) {
-    self.fromTop = fromTop
-    self.verticalOffset = verticalOffset
-    self.sideOffset = sideOffset
-    self.presentedHeight = presentedHeight
+    self.modalConfig = modalConfig
     self.dismissOnBackgroundTap = shouldDismiss
     self.animationOptions = animationOptions
     super.init(isPresenter: true, duration: duration)
+  }
+  
+  func calculateToVCSizeAndFrame() {
+    
   }
   
   open override func performAnimations(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC, completion: @escaping () -> ()) {
@@ -41,20 +37,17 @@ open class SlideUpWithContextAnimator<PresentingVC: UIViewController, PresentedV
     containerView.addSubview(toView)
     
     toView.bounds.size = CGSize(
-      width: containerView.bounds.width - sideOffset,
-      height: presentedHeight
+      width: containerView.bounds.width - modalConfig.sideOffset,
+      height: modalConfig.height
     )
     
     // Add Corner Radius to presenting view
-    // Round top corners
     let maskLayer = CAShapeLayer()
-    
     maskLayer.path = UIBezierPath(
       roundedRect:toView.bounds,
-      byRoundingCorners:[.topRight, .topLeft],
-      cornerRadii: CGSize(width: 15, height:  15)
+      byRoundingCorners: modalConfig.roundedCorners,
+      cornerRadii: CGSize(width: modalConfig.roundedCornersRadius, height:  modalConfig.roundedCornersRadius)
       ).cgPath
-    
     toView.layer.mask = maskLayer
     
     // Push beneath visible view
@@ -67,7 +60,7 @@ open class SlideUpWithContextAnimator<PresentingVC: UIViewController, PresentedV
     UIView.animateKeyframes(
       withDuration: duration,
       delay: 0,
-      options: UIViewKeyframeAnimationOptions.calculationModeLinear,
+      options: [],
       animations: { [weak self] in
         
         guard let strongSelf = self else { return }
@@ -76,19 +69,25 @@ open class SlideUpWithContextAnimator<PresentingVC: UIViewController, PresentedV
           withRelativeStartTime: 0,
           relativeDuration: strongSelf.duration) {
             
-            presentingVC.view.transform = CGAffineTransform(scaleX: strongSelf.presentingVCScale, y: strongSelf.presentingVCScale)
-            presentingVC.view.layer.cornerRadius = 4
-            presentingVC.view.layer.masksToBounds = true
-        }
-        
-        UIView.addKeyframe(
-          withRelativeStartTime: 0,
-          relativeDuration: strongSelf.duration) {
+            /*
+             * Animate 'from' view controller.
+             */
+            
+            // Scale
+            presentingVC.view.transform = CGAffineTransform(
+              scaleX: strongSelf.presentingVCScale,
+              y: strongSelf.presentingVCScale
+            )
             
             // Offset from top or bottom
-            presentedVC.view.frame.origin.y = strongSelf.fromTop ?
-              strongSelf.verticalOffset:
-              (transitionContext.containerView.bounds.maxY - presentedVC.view.bounds.height) - strongSelf.verticalOffset
+            switch strongSelf.modalConfig.verticalAlignment {
+            case .centered:
+            presentedVC.view.center.y  = containerView.frame.midY
+            case .top:
+              presentedVC.view.frame.origin.y = strongSelf.modalConfig.verticalOffset
+            case .bottom:
+              presentedVC.view.frame.origin.y = (transitionContext.containerView.bounds.maxY - presentedVC.view.bounds.height) - strongSelf.modalConfig.verticalOffset
+            }            
         }
         
     }) { _ in

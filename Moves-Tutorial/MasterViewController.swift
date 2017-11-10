@@ -43,9 +43,15 @@ class MasterViewController: UIViewController, UIViewControllerTransitioningDeleg
   
   @IBAction func transitionButtonPressed(_ sender: Any) {
     
-    let vc = storyboard!.instantiateViewController(withIdentifier: "ModalViewController") as! ModalViewController
-//    vc.transitioningDelegate = self
-    present(vc, animated: true, completion: nil)
+    let dvc = storyboard!.instantiateViewController(withIdentifier: "ModalViewController") as! ModalViewController
+      
+    // We are managing the destination view controller's animation on its behalf.
+    // As a result, the system will call the 'transitionDuration:' and
+    // 'animateTransition:transitionContext:' methods we declared above
+    // when coordinating this custom transition.
+    dvc.transitioningDelegate = self
+    
+    present(dvc, animated: true, completion: nil)
   }
 }
 

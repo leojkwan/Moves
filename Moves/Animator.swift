@@ -4,13 +4,10 @@ import UIKit
 
 public enum AnimaterLifecycleEvent: CustomStringConvertible {
   case transitionWillAnimate(transitionContext: UIViewControllerContextTransitioning)
-  case transitionAnimating(transitionContext: UIViewControllerContextTransitioning)
   case transitionDidAnimate(transitionContext: UIViewControllerContextTransitioning)
   
   public var description: String {
     switch self {
-    case .transitionAnimating:
-      return "transition animating"
     case .transitionWillAnimate:
       return "transition will animate"
     case .transitionDidAnimate:
@@ -70,34 +67,27 @@ open class Animator<PresentingVC: UIViewController, PresentedVC: UIViewControlle
     func animationContextualViewsIfNecessary() {
       
       if let contextualViews = registeredContextualViews?() {
-        
         animateContextualViews(
           isPresenting: isPresenter,
           using: transitionContext,
           contextualViews: contextualViews
         )
-        
-        // nil registered contextual views once animations are run.
-        // We do not want to keep references to detail view controller subviews
-        registeredContextualViews = nil
       }
     }
     
     if !isPresenter { animationContextualViewsIfNecessary() }
     
-    // Perform & Complete animation lifecycles sequentially invoked
-    performAnimations(using: transitionContext, from: presentingViewController, to: toVC) { [weak self] in
+    self.performAnimations(using: transitionContext, from: presentingViewController, to: toVC) { [weak self] in
       self?.completeAnimation(using: transitionContext, from: presentingViewController, to: toVC)
     }
     
     if isPresenter { animationContextualViewsIfNecessary() }
   }
   
-  
   // MARK: Animator
   
   open func performAnimations(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC, completion: @escaping ()-> ()) {
-    events.value = AnimaterLifecycleEvent.transitionAnimating(transitionContext: transitionContext)
+    events.value = AnimaterLifecycleEvent.transitionWillAnimate(transitionContext: transitionContext)
     
     // Should be subclassed; here we define how
     // the presented view controller is animated in
@@ -106,6 +96,11 @@ open class Animator<PresentingVC: UIViewController, PresentedVC: UIViewControlle
   
   open func completeAnimation(using transitionContext: UIViewControllerContextTransitioning, from presentingVC: PresentingVC, to presentedVC: PresentedVC) {
     events.value = AnimaterLifecycleEvent.transitionDidAnimate(transitionContext: transitionContext)
+    
+    // nil registered contextual views once animations are complete.
+    // We do not want to keep references to detail view controller subviews
+    registeredContextualViews = nil
+    
     transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
   }
   
@@ -139,7 +134,6 @@ open class Animator<PresentingVC: UIViewController, PresentedVC: UIViewControlle
         while currentSuperView.superview != canvas {
           
           guard let animationSuperviewSuperView = currentSuperView.superview else { break }
-          
           let convertedFrame = currentSuperView.convert(startingAnimationFrame, to: animationSuperviewSuperView)
           let convertedCenter = currentSuperView.convert(startingAnimationCenter, to: animationSuperviewSuperView)
           startingAnimationFrame = convertedFrame
