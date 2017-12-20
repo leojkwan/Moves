@@ -1,29 +1,52 @@
 import Foundation
 
+public struct DimOverlayConfiguration {
+  public static func defaultConfig() -> DimOverlayConfiguration {
+    return DimOverlayConfiguration(
+      showBackgroundDimView: true,
+      dismissDimViewOnTap: true,
+      dimAnimationDuration: 0.5
+    )
+  }
+  
+  public let showBackgroundDimView: Bool
+  public let dismissDimViewOnTap: Bool
+  public let dimAnimationDuration: CGFloat
+  
+  public init(
+    showBackgroundDimView: Bool,
+    dismissDimViewOnTap: Bool,
+    dimAnimationDuration: CGFloat
+    ) {
+    self.showBackgroundDimView = showBackgroundDimView
+    self.dismissDimViewOnTap = dismissDimViewOnTap
+    self.dimAnimationDuration = dimAnimationDuration
+  }
+}
+
 public struct MovesConfiguration {
-    public static func defaultConfig() -> MovesConfiguration {
-        return MovesConfiguration(
-            showBackgroundDimView: true,
-            dismissDimViewOnTap: true,
-            presentedVCIsPannable: true,
-            panOptions: PannableMoveOptions.defaultOptions()
-        )
-    }
-    
-    public let showBackgroundDimView: Bool
-    public let dismissDimViewOnTap: Bool
-    public let presentedVCIsPannable: Bool
-    public let panOptions: PannableMoveOptions
-    
-    public init(
-        showBackgroundDimView: Bool,
-        dismissDimViewOnTap: Bool,
-        presentedVCIsPannable: Bool,
-        panOptions: PannableMoveOptions
-        ) {
-        self.showBackgroundDimView = showBackgroundDimView
-        self.dismissDimViewOnTap = dismissDimViewOnTap
-        self.presentedVCIsPannable = presentedVCIsPannable
-        self.panOptions = panOptions
-    }
+  public static func defaultConfig() -> MovesConfiguration {
+    return MovesConfiguration(
+      showBackgroundDimView: true,
+      dismissDimViewOnTap: true,
+      pannable: false
+    )
+  }
+  
+  public var showBackgroundDimView: Bool
+  public var dismissDimViewOnTap: Bool
+  public var pannable: Bool
+  public var unwindContextualViewsOnDismiss: Bool
+  
+  public init(
+    showBackgroundDimView: Bool,
+    dismissDimViewOnTap: Bool,
+    pannable: Bool,
+    unwindContextualViewsOnDismiss: Bool = true
+    ) {
+    self.showBackgroundDimView = showBackgroundDimView
+    self.dismissDimViewOnTap = dismissDimViewOnTap
+    self.pannable = false
+    self.unwindContextualViewsOnDismiss = unwindContextualViewsOnDismiss
+  }
 }

@@ -5,18 +5,18 @@ public enum PannableMoveDirection {
     case free
 }
 
-public struct PannableMoveOptions {
-    static public func defaultOptions() -> PannableMoveOptions {
-        return PannableMoveOptions(
+public struct PannableConfiguration {
+    static public func defaultOptions() -> PannableConfiguration {
+        return PannableConfiguration(
             direction: PannableMoveDirection.free,
             dismissRadiusThreshold: 50,
             lockedDirections: []
         )
     }
     
-    public let direction: PannableMoveDirection
-    public let dismissRadiusThreshold: CGFloat
-    public let lockedDirections: [Direction]
+    public var direction: PannableMoveDirection
+    public var dismissRadiusThreshold: CGFloat
+    public var lockedDirections: [Direction]
     
     public init(
         direction: PannableMoveDirection,

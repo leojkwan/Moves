@@ -4,73 +4,93 @@ import MiniObservable
 
 public typealias ContextualViewPair = (fromView: UIView, toView: UIView)
 
-public enum Direction {
-  case left
-  case right
-  case up
-  case down
-}
-
-open class MovesCoordinator<Presenter: Animator<T, U>, Dismisser: Animator<T, U>, T, U>: NSObject, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate {
+open class MovesCoordinator<T: UIViewController, U: UIViewController>: NSObject, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate {
+  
+  public typealias VCAnimator = Animator<T, U>
   
   private let disposeBag = DisposeBag()
+  private var originPoint: CGPoint = CGPoint.zero
+  public let presenter: VCAnimator
+  public var dismisser: VCAnimator
+  public var movesConfig: MovesConfiguration
+  public var dimConfig: DimOverlayConfiguration
+  public var panConfig: PannableConfiguration
+  private weak var presentingViewController: T?
+  private weak var presentedViewController: U?
+  
+  // Background dim
   fileprivate var dimBackgroundView: UIView?
-  fileprivate var originPoint: CGPoint!
-  public let presenter: Presenter
-  public var dismisser: Dismisser
-  public let config: MovesConfiguration
-  public let unwindContextualViewsOnDismiss: Bool = true
-  weak var presentedViewController: U?
-  weak var presentingViewController: T?
   
   public init(
-    presenter: Presenter,
-    dismisser: Dismisser,
-    config: MovesConfiguration = MovesConfiguration.defaultConfig()) {
+    presenter: VCAnimator,
+    dismisser: VCAnimator,
+    movesConfig: MovesConfiguration = MovesConfiguration.defaultConfig(),
+    dimConfig: DimOverlayConfiguration = DimOverlayConfiguration.defaultConfig()
+    ) {
     self.presenter = presenter
     self.dismisser = dismisser
-    self.config = config
+    self.movesConfig = movesConfig
+    self.dimConfig = dimConfig
+    self.panConfig = PannableConfiguration.defaultOptions()
     super.init()
     
     self.observeAnimatorLifeCycles(presenter: presenter, dismisser: dismisser)
   }
   
-  private func observeAnimatorLifeCycles(presenter: Presenter, dismisser: Dismisser) {
+  private func observeAnimatorLifeCycles(presenter: VCAnimator, dismisser: VCAnimator) {
     
-    // Observe presenter
-    presenter.events.observe { [weak self] (_, newEvent) in
+    for animator in [presenter, dismisser] {
       
-      guard let strongSelf = self else { return }
-      guard let event = newEvent else { return }
-      
-      
-      switch event {
-      case .transitionAnimating(let transitionContext):
-        if strongSelf.config.showBackgroundDimView {
-          strongSelf.handleBackgroundDimView(isPresenting: true, transitionContext: transitionContext)
+      animator.events.observe { [weak self] (_, newEvent) in
+        
+        guard let strongSelf = self else { return }
+        guard let event = newEvent else { return }
+        
+        switch event {
+        case .transitionDidAnimate:
+          
+          if !animator.isPresenter {
+            // clean up any references coordinator has with
+            // the transition that just finished
+            strongSelf.performCleanup()
+          }
+        case .transitionWillAnimate(let transitionContext):
+          strongSelf.presentingViewController?.view.transform = CGAffineTransform.identity
+
+          strongSelf.resetVCTransformationsIfNecessary(animator: animator, with: transitionContext)
+          
+          if strongSelf.movesConfig.showBackgroundDimView {
+            strongSelf.handleBackgroundDimView(
+              isPresenting: animator.isPresenter,
+              transitionContext: transitionContext
+            )
+          }
         }
-      default:
-        break
-      }
-      }.disposed(by: disposeBag)
+        }.disposed(by: disposeBag)
+    }
+  }
+  
+  private func performCleanup() {
+    presentedViewController = nil
+    presentingViewController = nil
+    presenter.registeredContextualViews = nil
+    dismisser.registeredContextualViews = nil
+    presenter.events.value = nil
+    dismisser.events.value = nil
+  }
+  
+  private func resetVCTransformationsIfNecessary(animator: VCAnimator, with transitionContext: UIViewControllerContextTransitioning) {
     
+    // Make sure we are dismissing and presenter transformed presenting view controller
+    guard !animator.isPresenter && presenter is TransformAnimator else { return }
     
-    // Observe dismisser
-    dismisser.events.observe { [weak self] (_, newEvent) in
-      
+    // Reset any view transformations presenter made
+    DispatchQueue.main.async { [weak self] in
       guard let strongSelf = self else { return }
-      guard let event = newEvent else { return }
-      
-      
-      switch event {
-      case .transitionAnimating(let transitionContext):
-        if strongSelf.config.showBackgroundDimView {
-          strongSelf.handleBackgroundDimView(isPresenting: false, transitionContext: transitionContext)
-        }
-      default:
-        break
-      }
-      }.disposed(by: disposeBag)
+      UIView.animate(withDuration: strongSelf.dismisser.transitionDuration(using: transitionContext), animations: {
+        strongSelf.presentingViewController?.view.transform = CGAffineTransform.identity
+      })
+    }
   }
   
   private func handleBackgroundDimView(isPresenting: Bool, transitionContext: UIViewControllerContextTransitioning) {
@@ -88,7 +108,7 @@ open class MovesCoordinator<Presenter: Animator<T, U>, Dismisser: Animator<T, U>
       containerView.insertSubview(dimView, belowSubview: toView)
       
       // Add gesture recognizer to remove dim view
-      if config.dismissDimViewOnTap {
+      if dimConfig.dismissDimViewOnTap {
         let tap = UITapGestureRecognizer(target: self, action: #selector(dimBackgroundTapped))
         dimView.addGestureRecognizer(tap)
       }
@@ -96,7 +116,7 @@ open class MovesCoordinator<Presenter: Animator<T, U>, Dismisser: Animator<T, U>
       // keep reference to dim view for future dismissal
       dimBackgroundView = dimView
       
-      UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
+      UIView.animate(withDuration: self.presenter.duration, delay: 0, options: [], animations: {
         dimView.backgroundColor = UIColor(white: 0.0, alpha: 0.7)
       }, completion: nil)
       
@@ -111,16 +131,18 @@ open class MovesCoordinator<Presenter: Animator<T, U>, Dismisser: Animator<T, U>
     self.presentedViewController = presentedVC
     self.presentingViewController = presentingVC
     
-    // Register the same contextual views on the dismiss back, the animation are flip flopped.
-    if unwindContextualViewsOnDismiss {
+    // Register the same contextual views for the dismiss transition back.
+    // This animates contextual views back into place when dismissing.
+    if movesConfig.unwindContextualViewsOnDismiss {
       dismisser.registeredContextualViews = registeredContextualViews
     }
     
     presentedVC.transitioningDelegate = self
     presentedVC.modalPresentationStyle = .overCurrentContext
-    presentingVC.present(presentedVC, animated: true, completion: {
-      if self.config.presentedVCIsPannable {
-        self.enablePan()
+    presentingVC.present(presentedVC, animated: true, completion: { [weak self] in
+      guard let strongSelf = self else { return }
+      if strongSelf.movesConfig.pannable {
+        strongSelf.enablePan()
       }
     })
   }
@@ -186,7 +208,7 @@ open class MovesCoordinator<Presenter: Animator<T, U>, Dismisser: Animator<T, U>
     var xTranslation: CGFloat = 0
     var yTranslation: CGFloat = 0
     
-    switch config.panOptions.direction {
+    switch panConfig.direction {
     case .horizontal:
       xTranslation = translation.x
     case .vertical:
@@ -196,7 +218,7 @@ open class MovesCoordinator<Presenter: Animator<T, U>, Dismisser: Animator<T, U>
       yTranslation = translation.y
     }
     
-    for lockedDirection in config.panOptions.lockedDirections {
+    for lockedDirection in panConfig.lockedDirections {
       switch lockedDirection {
       case .up:
         if yTranslation < 0 { yTranslation = 0 }
@@ -229,7 +251,7 @@ open class MovesCoordinator<Presenter: Animator<T, U>, Dismisser: Animator<T, U>
       let distanceFromCenter = distance(originPoint, toView.frame.origin)
       
       DispatchQueue.main.async {
-        if (distanceFromCenter > self.config.panOptions.dismissRadiusThreshold) {
+        if (distanceFromCenter > self.panConfig.dismissRadiusThreshold) {
           
           presentedVC.dismiss(animated: true, completion: nil)
           
@@ -277,12 +299,6 @@ open class MovesCoordinator<Presenter: Animator<T, U>, Dismisser: Animator<T, U>
   
   // MARK: UIGestureRecognizerDelegate
   public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-    if let scrollView = otherGestureRecognizer.view as? UIScrollView {
-      if scrollView.contentOffset.y <= 0 {
-        return true
-      }
-    }
-    
     return false
   }
 }
