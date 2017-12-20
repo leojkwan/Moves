@@ -7,18 +7,15 @@ open class SlideInOverContextAnimator<PresentingVC: UIViewController, PresentedV
   fileprivate var presentingVCScale: CGFloat = 1
   fileprivate var slidingFrom: Direction
   
-  fileprivate var animationOptions: UIViewAnimationOptions = .curveLinear
   public var modalConfig: ModalConfiguration
   
   public required init(
     slidingFrom: Direction,
     modalConfig: ModalConfiguration = ModalConfiguration(),
-    duration: Double = 0.6,
-    animationOptions: UIViewAnimationOptions = .curveLinear
+    duration: Double = 0.6
     ) {
     self.slidingFrom = slidingFrom
     self.modalConfig = modalConfig
-    self.animationOptions = animationOptions
     super.init(isPresenter: true, duration: duration)
   }
   

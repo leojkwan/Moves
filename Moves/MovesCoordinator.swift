@@ -9,14 +9,14 @@ open class MovesCoordinator<T: UIViewController, U: UIViewController>: NSObject,
   public typealias VCAnimator = Animator<T, U>
   
   private let disposeBag = DisposeBag()
-  fileprivate var originPoint: CGPoint!
+  private var originPoint: CGPoint = CGPoint.zero
   public let presenter: VCAnimator
   public var dismisser: VCAnimator
   public var movesConfig: MovesConfiguration
   public var dimConfig: DimOverlayConfiguration
   public var panConfig: PannableConfiguration
-  weak var presentingViewController: T?
-  weak var presentedViewController: U?
+  private weak var presentingViewController: T?
+  private weak var presentedViewController: U?
   
   // Background dim
   fileprivate var dimBackgroundView: UIView?
@@ -48,7 +48,12 @@ open class MovesCoordinator<T: UIViewController, U: UIViewController>: NSObject,
         
         switch event {
         case .transitionDidAnimate:
-          break
+          
+          if !animator.isPresenter {
+            // clean up any references coordinator has with
+            // the transition that just finished
+            strongSelf.performCleanup()
+          }
         case .transitionWillAnimate(let transitionContext):
           strongSelf.presentingViewController?.view.transform = CGAffineTransform.identity
 
@@ -65,15 +70,25 @@ open class MovesCoordinator<T: UIViewController, U: UIViewController>: NSObject,
     }
   }
   
+  private func performCleanup() {
+    presentedViewController = nil
+    presentingViewController = nil
+    presenter.registeredContextualViews = nil
+    dismisser.registeredContextualViews = nil
+    presenter.events.value = nil
+    dismisser.events.value = nil
+  }
+  
   private func resetVCTransformationsIfNecessary(animator: VCAnimator, with transitionContext: UIViewControllerContextTransitioning) {
     
     // Make sure we are dismissing and presenter transformed presenting view controller
     guard !animator.isPresenter && presenter is TransformAnimator else { return }
     
     // Reset any view transformations presenter made
-    DispatchQueue.main.async {
-      UIView.animate(withDuration: self.dismisser.transitionDuration(using: transitionContext), animations: {
-        self.presentingViewController?.view.transform = CGAffineTransform.identity
+    DispatchQueue.main.async { [weak self] in
+      guard let strongSelf = self else { return }
+      UIView.animate(withDuration: strongSelf.dismisser.transitionDuration(using: transitionContext), animations: {
+        strongSelf.presentingViewController?.view.transform = CGAffineTransform.identity
       })
     }
   }
@@ -124,9 +139,10 @@ open class MovesCoordinator<T: UIViewController, U: UIViewController>: NSObject,
     
     presentedVC.transitioningDelegate = self
     presentedVC.modalPresentationStyle = .overCurrentContext
-    presentingVC.present(presentedVC, animated: true, completion: {
-      if self.movesConfig.pannable {
-        self.enablePan()
+    presentingVC.present(presentedVC, animated: true, completion: { [weak self] in
+      guard let strongSelf = self else { return }
+      if strongSelf.movesConfig.pannable {
+        strongSelf.enablePan()
       }
     })
   }
@@ -283,12 +299,6 @@ open class MovesCoordinator<T: UIViewController, U: UIViewController>: NSObject,
   
   // MARK: UIGestureRecognizerDelegate
   public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-    if let scrollView = otherGestureRecognizer.view as? UIScrollView {
-      if scrollView.contentOffset.y <= 0 {
-        return true
-      }
-    }
-    
     return false
   }
 }

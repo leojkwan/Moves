@@ -19,14 +19,12 @@ public class SlideUpWithContextViewController: UIViewController {
       let modalConfig = ModalConfiguration()
       modalConfig.width = self.view.bounds.width * 13/15
       modalConfig.height = self.view.bounds.width * 13/15
-      modalConfig.verticalAlignment = .centered
-      modalConfig.horizontalAlignment = .centered
       modalConfig.roundedCorners = [.topLeft, .topRight, .bottomRight, .bottomLeft]
       modalConfig.roundedCornersRadius = 5
       
       presenter = FadeInOverContextAnimator<UINavigationController, SlideUpWithContextModalViewController>(
         modalConfig: modalConfig,
-        duration: 3
+        duration: 0.6
       )
     case .slideUpWithContext:
       
@@ -47,8 +45,7 @@ public class SlideUpWithContextViewController: UIViewController {
     
     switch self.example {
     case MovesExample.fadeIn:
-      
-      dismisser = FadeOutOverContextAnimator<UINavigationController, SlideUpWithContextModalViewController>(duration: 3)
+      dismisser = FadeOutOverContextAnimator<UINavigationController, SlideUpWithContextModalViewController>(duration: 0.6)
     case .slideUpWithContext:
       dismisser = SlideOutOverContextAnimator<UINavigationController, SlideUpWithContextModalViewController>(slidingTo: .down, duration: 0.4)
     }
@@ -57,6 +54,10 @@ public class SlideUpWithContextViewController: UIViewController {
       presenter: presenter,
       dismisser: dismisser
     )
+    
+    if self.example == .slideUpWithContext {
+      coordinator.panConfig.lockedDirections = [.left, .right, .up]
+    }
     
     coordinator.movesConfig.pannable = true
     coordinator.panConfig.dismissRadiusThreshold = 100
@@ -67,19 +68,7 @@ public class SlideUpWithContextViewController: UIViewController {
   @IBAction func transitionButtonPressed(_ sender: Any) {
     
     let vc = storyboard!.instantiateViewController(withIdentifier: "SlideUpWithContextModalViewController") as! SlideUpWithContextModalViewController
-    
-    movesCoordinator.panConfig.lockedDirections = [.left, .right, .up]
-    
-    movesCoordinator.present(vc, presentingVC: self.navigationController!, with: { [weak self] () -> ([ContextualViewPair]) in
-      
-      guard let strongSelf = self else { return [] }
-      
-      // Register contextual views
-      return [
-        ContextualViewPair(strongSelf.item, vc.detailItem),
-        ContextualViewPair(strongSelf.titleTextLabel, vc.detailTitleTextLabel)
-      ]
-    })
+    movesCoordinator.present(vc, presentingVC: self.navigationController!)
   }
 }
 

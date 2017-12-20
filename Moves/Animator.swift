@@ -169,8 +169,8 @@ open class Animator<PresentingVC: UIViewController, PresentedVC: UIViewControlle
         
         canvas.addSubview(snapshot)
         
-        startingContextualView.alpha = 0.2
-        destinationContextualView.alpha = 0.2
+        startingContextualView.alpha = 0
+        destinationContextualView.alpha = 0
         
         UIView.animate(withDuration: self.duration, delay: 0, options: [
           .curveEaseInOut,
