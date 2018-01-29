@@ -46,7 +46,7 @@ public struct MovesConfiguration {
     ) {
     self.showBackgroundDimView = showBackgroundDimView
     self.dismissDimViewOnTap = dismissDimViewOnTap
-    self.pannable = false
+    self.pannable = pannable
     self.unwindContextualViewsOnDismiss = unwindContextualViewsOnDismiss
   }
 }

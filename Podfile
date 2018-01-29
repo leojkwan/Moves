@@ -6,7 +6,7 @@ target 'Moves' do
   use_frameworks!
   
   # Pods for VCMoves
-  pod 'MiniObservable', '~> 1.1.0' 
+  pod 'MiniObservable', '~> 1.2.0' 
 end
 
 target 'VCMoves' do
