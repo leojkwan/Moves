@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "1100"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -13,11 +13,11 @@
             buildForProfiling = "YES"
             buildForArchiving = "YES">
             <BuildableReference
-               BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '1720081BBD45BB9E235CE89338E93BF1'
-               BlueprintName = 'MiniObservable'
-               ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'MiniObservable.framework'>
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A8C4FCD5F1935AAE913EE12FF810142D"
+               BuildableName = "MiniObservable.framework"
+               BlueprintName = "MiniObservable"
+               ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

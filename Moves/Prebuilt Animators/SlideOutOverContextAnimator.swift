@@ -26,7 +26,7 @@ public class SlideOutOverContextAnimator<PresentingVC: UIViewController, Present
     UIView.animateKeyframes(
       withDuration: self.duration,
       delay: 0.0,
-      options: UIViewKeyframeAnimationOptions(),
+      options: UIView.KeyframeAnimationOptions(),
       animations: {
         
         // Slide view out

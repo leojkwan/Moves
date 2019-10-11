@@ -9,7 +9,7 @@ public class DisposeBag {
     disposables.append(disposable)
   }
   
-  func dispose() {
+  public func dispose() {
     disposables.forEach({
       #if DEBUG
         print("Disposing \($0)")
